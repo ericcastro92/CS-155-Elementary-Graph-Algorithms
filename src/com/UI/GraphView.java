@@ -37,20 +37,8 @@ public class GraphView extends javax.swing.JFrame
             }
         });
         
-        graph = new mxGraph();
-        parent = graph.getDefaultParent();
-
-        graph.getModel().beginUpdate();
-        try
-        {
-            Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30);
-            Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30);
-            graph.insertEdge(parent, null, null, v1, v2);
-        }
-        finally
-        {
-            graph.getModel().endUpdate();
-        }
+        buildStyles();
+        initializeGraph();
 
         TimerTask tt = new TimerTask() 
         {
@@ -71,11 +59,32 @@ public class GraphView extends javax.swing.JFrame
         graphScrollPane.add(graphComponent);
         graphScrollPane.setViewportView(graphComponent);
     }
-
-    private void traverseGraph()
+    
+    private void buildStyles()
     {
         
-        
+    }
+
+    private void initializeGraph()
+    {
+        graph = new mxGraph();
+        parent = graph.getDefaultParent();
+
+        graph.getModel().beginUpdate();
+        try
+        {
+            Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30);
+            Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30);
+            graph.insertEdge(parent, null, null, v1, v2);
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        }
+    }
+    
+    private void traverseGraph()
+    {
         graph.getModel().beginUpdate();
         try
         {
