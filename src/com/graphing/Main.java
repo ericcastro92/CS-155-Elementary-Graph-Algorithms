@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Main 
 {
     public static void main(String[] args) 
-    {
+    {        
         ArrayList<Node> nodes = new ArrayList<Node>();
         Node a = new Node("A");
         Node b = new Node("B");
@@ -29,5 +29,8 @@ public class Main
 
         GraphTools.dfs(a);
         GraphTools.resetNodes(nodes);
+        
+        Node head = GraphTools.generateGraph(4, 6);
+        GraphTools.dfs(head);
     }
 }
