@@ -109,6 +109,7 @@ public class GraphView extends javax.swing.JFrame
             Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30, "ROUNDED");
             Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30, "ROUNDED");
             graph.insertEdge(parent, null, null, v1, v2);
+            graph.insertEdge(parent, null, null, v2, v1);
         }
         finally
         {
