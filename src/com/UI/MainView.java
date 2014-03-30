@@ -58,6 +58,12 @@ public class MainView extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Graph Visualizer");
 
+        nodeSlider.setMajorTickSpacing(5);
+        nodeSlider.setMaximum(20);
+        nodeSlider.setMinimum(1);
+        nodeSlider.setMinorTickSpacing(1);
+        nodeSlider.setSnapToTicks(true);
+
         jLabel1.setText("Nodes:");
 
         jLabel2.setText("Algorithms");
@@ -124,7 +130,7 @@ public class MainView extends javax.swing.JFrame
     private void dfsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsButtonActionPerformed
         disableButtons();
         
-        GraphView frame = new GraphView(this);
+        GraphView frame = new GraphView(this, "Depth First Search");
         int x = (Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2;
         int y = (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2;
        

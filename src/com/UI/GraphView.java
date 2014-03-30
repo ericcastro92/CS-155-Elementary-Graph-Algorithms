@@ -28,9 +28,10 @@ public class GraphView extends javax.swing.JFrame
     /**
      * Creates new form GraphView
      */
-    public GraphView(MainView mv) 
+    public GraphView(MainView mv, String title) 
     {
         initComponents();
+        initCustomComponents();
         addWindowListener(new WindowAdapter()
         {
             @Override
@@ -43,7 +44,24 @@ public class GraphView extends javax.swing.JFrame
         graph = new mxGraph();
         buildStyles();
         initializeGraph();
-
+        showAlgorithm();
+        
+        setTitle(title);
+    }
+    
+    private void initCustomComponents()
+    {
+        
+        //Set up speed slider
+        speedSlider.setMaximum(5);
+        speedSlider.setMinimum(1);
+        speedSlider.setMajorTickSpacing(1);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setValue(3);
+    }
+    
+    private void showAlgorithm()
+    {
         TimerTask tt = new TimerTask() 
         {
             @Override
@@ -56,12 +74,7 @@ public class GraphView extends javax.swing.JFrame
         
         System.out.println("Waiting");
         Timer timer = new Timer();
-        timer.schedule(tt, 5000);//Wait for 5 seconds
-        
-        
-        mxGraphComponent graphComponent = new mxGraphComponent(graph);
-        graphScrollPane.add(graphComponent);
-        graphScrollPane.setViewportView(graphComponent);
+        timer.schedule(tt, 3000);//Wait for 3 seconds
     }
     
     private void buildStyles()
@@ -101,15 +114,48 @@ public class GraphView extends javax.swing.JFrame
         {
             graph.getModel().endUpdate();
         }
+        
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        graphComponent.setDragEnabled(false);
+        graphComponent.setEnabled(false);
+        graphScrollPane.add(graphComponent);
+        graphScrollPane.setViewportView(graphComponent);
     }
+    
+    Object v3;
     
     private void traverseGraph()
     {
         graph.getModel().beginUpdate();
         try
         {
-            Object v3 = graph.insertVertex(parent, null, "C", 20, 20, 80, 30, "RED_ROUNDED");
-            Object v4 = graph.insertVertex(parent, null, "D", 240, 150, 80, 30, "RED_ROUNDED");
+            v3 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30, "RED_ROUNDED");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        }
+        
+        TimerTask tt = new TimerTask() 
+        {
+            @Override
+            public void run() 
+            {
+                traverseGraphHelper();
+            }
+        };
+        
+        System.out.println("Waiting");
+        Timer timer = new Timer();
+        timer.schedule(tt, 3000);//Wait for 3 seconds
+    }
+    
+    private void traverseGraphHelper()
+    {
+        graph.getModel().beginUpdate();
+        try
+        {
+            Object v4 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30, "RED_ROUNDED");
             graph.insertEdge(parent, null, null, v3, v4,"OVERLAY_EDGE");
         }
         finally
@@ -127,20 +173,54 @@ public class GraphView extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        speedSlider = new javax.swing.JSlider();
         graphScrollPane = new javax.swing.JScrollPane();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Graph");
+
+        speedSlider.setMajorTickSpacing(1);
+        speedSlider.setMaximum(5);
+        speedSlider.setMinimum(1);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setSnapToTicks(true);
+        speedSlider.setToolTipText("Select how fast you wouldl like the algorithm to run.");
+        speedSlider.setValue(3);
+
+        jLabel1.setText("Fast");
+
+        jLabel2.setText("Slow");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(speedSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(51, 51, 51))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(275, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(speedSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                    .addGap(43, 43, 43)))
         );
 
         pack();
@@ -148,5 +228,8 @@ public class GraphView extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane graphScrollPane;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JSlider speedSlider;
     // End of variables declaration//GEN-END:variables
 }
