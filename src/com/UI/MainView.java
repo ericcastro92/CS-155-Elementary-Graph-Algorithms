@@ -127,26 +127,8 @@ public class MainView extends javax.swing.JFrame
         GraphView frame = new GraphView(this);
         int x = (Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2;
         int y = (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2;
-        
-        
-        /*
-        mxGraph graph = new mxGraph();
-        //Style
-        mxStylesheet stylesheet = graph.getStylesheet();
-        HashMap<String, Object> style = new HashMap<>();
-        
-        //Rounded Style
-        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
-        stylesheet.putCellStyle("ROUNDED", style);
-        //End style
-        
-        Object defParent = graph.getDefaultParent();
-        
-        Object root = graph.insertVertex(defParent, null, "A", x, y, 80, 30, "ROUNDED");
-        Object child = graph.insertVertex(defParent, null, "B", x+200, y, 80, 30, "ROUNDED");
-        graph.insertEdge(defParent, null, null, root, child);*/
        
-        //frame.setLocation(x, y);      
+        frame.setLocation(x, y);      
         frame.setVisible(true);
     }//GEN-LAST:event_dfsButtonActionPerformed
 

@@ -80,18 +80,10 @@ public class GraphView extends javax.swing.JFrame
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
         stylesheet.putCellStyle("RED_ROUNDED", style);
         
-        //HEADER EDGE
+        //Overlay edge
         style = new HashMap<>();
-        style.put(mxConstants.STYLE_STROKECOLOR, "#c40f00");
-        stylesheet.putCellStyle("HEADER EDGE", style);
-        
-        //HEADER VERETX
-        style = new HashMap<>();
-        style.put(mxConstants.STYLE_FILLCOLOR, "#c40f00");
-        style.put(mxConstants.STYLE_FONTCOLOR, "#000");
-        style.put(mxConstants.STYLE_STROKECOLOR, "#000");
-        style.put(mxConstants.STYLE_STROKEWIDTH, 2);
-        stylesheet.putCellStyle("HEADER VERTEX", style);
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("OVERLAY_EDGE", style);
     }
 
     private void initializeGraph()
@@ -118,7 +110,7 @@ public class GraphView extends javax.swing.JFrame
         {
             Object v3 = graph.insertVertex(parent, null, "C", 20, 20, 80, 30, "RED_ROUNDED");
             Object v4 = graph.insertVertex(parent, null, "D", 240, 150, 80, 30, "RED_ROUNDED");
-            graph.insertEdge(parent, null, null, v3, v4);
+            graph.insertEdge(parent, null, null, v3, v4,"OVERLAY_EDGE");
         }
         finally
         {
