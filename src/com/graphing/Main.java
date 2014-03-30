@@ -30,7 +30,7 @@ public class Main
         GraphTools.dfs(a);
         GraphTools.resetNodes(nodes);
         
-        Node head = GraphTools.generateGraph(4, 6);
+        Node head = GraphTools.generateGraph(4, 6).head;
         GraphTools.dfs(head);
     }
 }
