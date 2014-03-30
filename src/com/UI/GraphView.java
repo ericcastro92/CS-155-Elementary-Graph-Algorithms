@@ -7,9 +7,12 @@
 package com.UI;
 
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxStylesheet;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +40,7 @@ public class GraphView extends javax.swing.JFrame
             }
         });
         
+        graph = new mxGraph();
         buildStyles();
         initializeGraph();
 
@@ -62,19 +66,43 @@ public class GraphView extends javax.swing.JFrame
     
     private void buildStyles()
     {
+        mxStylesheet stylesheet = graph.getStylesheet();
+        HashMap<String, Object> style = new HashMap<>();
         
+        //Default rounded style
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        stylesheet.putCellStyle("ROUNDED", style);
+        
+        //Red rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#FF0000");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("RED_ROUNDED", style);
+        
+        //HEADER EDGE
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_STROKECOLOR, "#c40f00");
+        stylesheet.putCellStyle("HEADER EDGE", style);
+        
+        //HEADER VERETX
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_FILLCOLOR, "#c40f00");
+        style.put(mxConstants.STYLE_FONTCOLOR, "#000");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000");
+        style.put(mxConstants.STYLE_STROKEWIDTH, 2);
+        stylesheet.putCellStyle("HEADER VERTEX", style);
     }
 
     private void initializeGraph()
     {
-        graph = new mxGraph();
         parent = graph.getDefaultParent();
 
         graph.getModel().beginUpdate();
         try
         {
-            Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30);
-            Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30);
+            Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30, "ROUNDED");
+            Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30, "ROUNDED");
             graph.insertEdge(parent, null, null, v1, v2);
         }
         finally
@@ -88,8 +116,8 @@ public class GraphView extends javax.swing.JFrame
         graph.getModel().beginUpdate();
         try
         {
-            Object v3 = graph.insertVertex(parent, null, "C", 20, 20, 80, 30);
-            Object v4 = graph.insertVertex(parent, null, "D", 240, 150, 80, 30);
+            Object v3 = graph.insertVertex(parent, null, "C", 20, 20, 80, 30, "RED_ROUNDED");
+            Object v4 = graph.insertVertex(parent, null, "D", 240, 150, 80, 30, "RED_ROUNDED");
             graph.insertEdge(parent, null, null, v3, v4);
         }
         finally
