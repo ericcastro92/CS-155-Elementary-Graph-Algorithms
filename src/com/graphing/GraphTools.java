@@ -94,13 +94,13 @@ public class GraphTools
     private static void dfsHelper(Node head)
     {
         if(head.visited)
-                return;
+            return;
 
         head.visited = true;
         System.out.println(head.name);
 
         for(Node node : head.adjacencyList)
-                dfsHelper(node);
+            dfsHelper(node);
     }
 
     public static void resetNodes(ArrayList<Node> nodes)

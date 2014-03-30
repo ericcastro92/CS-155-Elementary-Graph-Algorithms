@@ -170,29 +170,15 @@ public class MainView extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void dfsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsButtonActionPerformed
-        disableButtons();
-        
         GraphWrapper wrapper = GraphTools.generateGraph(nodeSlider.getValue(), edgeSlider.getValue());
         
-        GraphView frame = new GraphView(this, wrapper, "Depth First Search");
+        GraphView frame = new GraphView(wrapper, "Depth First Search");
         int x = (Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2;
         int y = (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2;
        
         frame.setLocation(x, y);      
         frame.setVisible(true);
     }//GEN-LAST:event_dfsButtonActionPerformed
-
-    public void disableButtons()
-    {
-        dfsButton.setEnabled(false);
-        bfsButton.setEnabled(false);
-    }
-    
-    public void enableButtons()
-    {
-        dfsButton.setEnabled(true);
-        bfsButton.setEnabled(true);
-    }
     
     /**
      * @param args the command line arguments

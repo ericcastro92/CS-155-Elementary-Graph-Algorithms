@@ -15,8 +15,11 @@ import com.mxgraph.view.mxStylesheet;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -24,24 +27,28 @@ import java.util.TimerTask;
  */
 public class GraphView extends javax.swing.JFrame 
 {   
-    private mxGraph graph;
+    private final Timer timer;
+    
+    private final mxGraph graph;
+    private final GraphWrapper wrapper;
     private Object parent;
+    
+    private final int[][] vertexLocations;
+    private int animationSpeed;
     
     /**
      * Creates new form GraphView
+     * @param wrapper
+     * @param title
      */
-    public GraphView(MainView mv, GraphWrapper wrapper, String title) 
+    public GraphView(GraphWrapper wrapper, String title) 
     {
+        this.wrapper = wrapper;
+        timer = new Timer();
+        vertexLocations = new int[wrapper.numNodes][2];
+        
         initComponents();
         initCustomComponents();
-        addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                mv.enableButtons();
-            }
-        });
         
         graph = new mxGraph();
         buildStyles();
@@ -59,11 +66,15 @@ public class GraphView extends javax.swing.JFrame
         speedSlider.setMajorTickSpacing(1);
         speedSlider.setSnapToTicks(true);
         speedSlider.setValue(3);
+        speedSlider.addChangeListener((ChangeEvent e) -> {
+            animationSpeed = (6 - speedSlider.getValue()) * 1000;
+            System.out.println(animationSpeed);
+        });
     }
     
     private void showAlgorithm()
     {
-        traverseGraph();
+        traverseGraph(null, wrapper.head);
     }
     
     private void buildStyles()
@@ -95,10 +106,32 @@ public class GraphView extends javax.swing.JFrame
         graph.getModel().beginUpdate();
         try
         {
-            Object v1 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30, "ROUNDED");
-            Object v2 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30, "ROUNDED");
-            graph.insertEdge(parent, null, null, v1, v2);
-            graph.insertEdge(parent, null, null, v2, v1);
+            Random rand = new Random();
+            Object[] verticies = new Object[wrapper.numNodes];
+            //Place head in top right location
+            verticies[0] = graph.insertVertex(parent, null, "A", 20, 20, 50, 50, "ROUNDED");
+            vertexLocations[0][0] = 20;
+            vertexLocations[0][1] = 20;
+            
+            //Place other nodes randomly in the view
+            for(int i=1;i<wrapper.numNodes;i++)
+            {
+                int x = rand.nextInt(50*wrapper.numNodes);
+                int y = rand.nextInt(50*wrapper.numNodes);
+                vertexLocations[i][0] = x;
+                vertexLocations[i][1] = y;
+                
+                verticies[i] = graph.insertVertex(parent, null, ((char) ('A'+i)), x, y, 50, 50, "ROUNDED");
+            }
+            
+            
+            //Add edges between nodes
+            for(int i=0;i<wrapper.numNodes;i++)
+                for(int j=0;j<wrapper.numNodes;j++)
+                {
+                    if(wrapper.connections[i][j] && i != j)
+                        graph.insertEdge(parent, null, null, verticies[i], verticies[j]);
+                }
         }
         finally
         {
@@ -109,48 +142,53 @@ public class GraphView extends javax.swing.JFrame
         graphComponent.setDragEnabled(false);
         graphComponent.setEnabled(false);
         graphScrollPane.add(graphComponent);
-        graphScrollPane.setViewportView(graphComponent);
+        graphScrollPane.setViewportView(graphComponent);        
     }
     
-    Object v3;
-    
-    private void traverseGraph()
+    //Currently uses dfs for traversal
+    private void traverseGraph(Object prevVertex, Node head)
     {
+        if(head.visited)
+            return;
+        
+        head.visited = true;
+        System.out.println(head.name);
+        //Add node to graph
+        Object curVertex = null;
         graph.getModel().beginUpdate();
         try
         {
-            v3 = graph.insertVertex(parent, null, "A", 20, 20, 80, 30, "RED_ROUNDED");
-        }
-        finally
-        {
-            graph.getModel().endUpdate();
-        }
-        
-        TimerTask tt = new TimerTask() 
-        {
-            @Override
-            public void run() 
+            curVertex = graph.insertVertex(parent, null, head.name, 
+                                            vertexLocations[head.name.charAt(0)-'A'][0], 
+                                            vertexLocations[head.name.charAt(0)-'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            //Insert edge
+            if(prevVertex!=null)
             {
-                traverseGraphHelper();
+                graph.insertEdge(parent, null, null, prevVertex, curVertex, "OVERLAY_EDGE");
             }
-        };
-        
-        System.out.println("Waiting");
-        Timer timer = new Timer();
-        timer.schedule(tt, 3000);//Wait for 3 seconds
-    }
-    
-    private void traverseGraphHelper()
-    {
-        graph.getModel().beginUpdate();
-        try
+        }
+        catch(Exception e)
         {
-            Object v4 = graph.insertVertex(parent, null, "B", 240, 150, 80, 30, "RED_ROUNDED");
-            graph.insertEdge(parent, null, null, v3, v4,"OVERLAY_EDGE");
+            System.out.println("Graph Exception");
         }
         finally
         {
             graph.getModel().endUpdate();
+        } 
+        
+        for(Node node : head.adjacencyList)//visit each neighbor
+        {
+            final Object next = curVertex;
+            TimerTask tt = new TimerTask() 
+            {
+                @Override
+                public void run() 
+                {
+                    traverseGraph(next, node);
+                }
+            };
+            timer.schedule(tt, animationSpeed);//Wait for 1 second
         }
     }
     
