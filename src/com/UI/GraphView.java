@@ -103,6 +103,15 @@ public class GraphView extends javax.swing.JFrame
 
     private void buildGraph()
     {
+        int nodeSize = 50;
+        int chartSpacing = 25;
+                
+        int chartSize = wrapper.numNodes / 2;
+        if(chartSize * chartSize < wrapper.numNodes)
+            chartSize+=1;
+         
+        boolean[][] placementChart = new boolean[chartSize][chartSize];
+        
         parent = graph.getDefaultParent();
 
         graph.getModel().beginUpdate();
@@ -112,6 +121,7 @@ public class GraphView extends javax.swing.JFrame
             Object[] verticies = new Object[wrapper.numNodes];
             //Place head in top right location
             verticies[0] = graph.insertVertex(parent, null, "A", 20, 20, 50, 50, "ROUNDED");
+            placementChart[0][0] = true;
             vertexLocations[0][0] = 20;
             vertexLocations[0][1] = 20;
             maxX = 150;
@@ -120,8 +130,18 @@ public class GraphView extends javax.swing.JFrame
             //Place other nodes randomly in the view
             for(int i=1;i<wrapper.numNodes;i++)
             {
-                int x = rand.nextInt(50*wrapper.numNodes);
-                int y = rand.nextInt(50*wrapper.numNodes);
+                int x = 0;
+                int y = 0;
+                while(placementChart[x][y])
+                {
+                    x = rand.nextInt(chartSize);
+                    y = rand.nextInt(chartSize);
+                }
+                placementChart[x][y] = true;
+                
+                x = (x * 50) + (x * 25) + 20;
+                y = (y * 50) + (y * 25) + 20;
+                
                 vertexLocations[i][0] = x;
                 vertexLocations[i][1] = y;
                 maxX = x > maxX ? x : maxX;
@@ -156,8 +176,6 @@ public class GraphView extends javax.swing.JFrame
     
     private void showAlgorithm()
     {
-        
-        
         ArrayList<String> order = GraphTools.dfs(wrapper.head);
         
         graph.getModel().beginUpdate();
