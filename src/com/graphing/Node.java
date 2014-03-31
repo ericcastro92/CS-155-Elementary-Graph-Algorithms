@@ -21,4 +21,10 @@ public class Node
 	{
 		return adjacencyList.add(node);
 	}
+        
+        @Override
+        public String toString()
+        {
+            return name;
+        }
 }

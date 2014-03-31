@@ -67,7 +67,7 @@ public class GraphTools
         }
 
         //Add random edges
-        int remainingEdges = numEdges - numNodes - 1;
+        int remainingEdges = numEdges - numNodes + 1;
 
         GraphWrapper wrapper = new GraphWrapper();
         wrapper.connections = connected;
@@ -75,9 +75,11 @@ public class GraphTools
         wrapper.numEdges = numEdges;
         wrapper.head = nodes[0];
         
+        sortNeighbors(nodes);//Sort node neighbors alphabetically
         if(remainingEdges<=0)
             return wrapper;
 
+        System.out.println("Remaining Edges: " + remainingEdges);
         for(int i=0;i<remainingEdges;i++)
         {
             //Find two nodes without an edge from prev to next
@@ -91,18 +93,7 @@ public class GraphTools
             connected[prevNode][nextNode] = true;
         }
         
-        //Sort node neighbors alphabetically
-        for(int i=0;i<numNodes;i++)
-        {
-            nodes[i].adjacencyList.sort(new Comparator<Node>()
-            {
-                @Override
-                public int compare(Node n1, Node n2) 
-                {
-                    return n2.name.charAt(0) - n1.name.charAt(0);
-                }
-            });
-        }
+        sortNeighbors(nodes);//Sort node neighbors alphabetically
 
         return wrapper;
     }
@@ -139,6 +130,22 @@ public class GraphTools
     {
         for(Node node : nodes)
             node.visited = false;
+    }
+                 
+    private static void sortNeighbors(Node[] nodes)
+    {
+        for(int i=0;i<nodes.length;i++)
+        {
+            nodes[i].adjacencyList.sort(new Comparator<Node>()
+            {
+                @Override
+                public int compare(Node n1, Node n2) 
+                {
+                    return n1.name.charAt(0) - n2.name.charAt(0);
+                }
+            });
+            System.out.println(nodes[i] + ": " + nodes[i].adjacencyList);
+        }
     }
     
 }
