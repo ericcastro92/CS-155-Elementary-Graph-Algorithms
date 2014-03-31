@@ -6,20 +6,20 @@
 
 package com.UI;
 
+import com.graphing.GraphTools;
 import com.graphing.GraphWrapper;
 import com.graphing.Node;
+import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -35,6 +35,8 @@ public class GraphView extends javax.swing.JFrame
     
     private final int[][] vertexLocations;
     private int animationSpeed;
+    private int maxX;
+    private int maxY;
     
     /**
      * Creates new form GraphView
@@ -59,7 +61,7 @@ public class GraphView extends javax.swing.JFrame
     
     private void initCustomComponents()
     {
-        
+        animationSpeed = 3000;
         //Set up speed slider
         speedSlider.setMaximum(5);
         speedSlider.setMinimum(1);
@@ -72,10 +74,10 @@ public class GraphView extends javax.swing.JFrame
         });
     }
     
-    private void showAlgorithm()
+    /*private void showAlgorithm()
     {
         traverseGraph(null, wrapper.head);
-    }
+    }*/
     
     private void buildStyles()
     {
@@ -112,6 +114,8 @@ public class GraphView extends javax.swing.JFrame
             verticies[0] = graph.insertVertex(parent, null, "A", 20, 20, 50, 50, "ROUNDED");
             vertexLocations[0][0] = 20;
             vertexLocations[0][1] = 20;
+            maxX = 150;
+            maxY = 150;
             
             //Place other nodes randomly in the view
             for(int i=1;i<wrapper.numNodes;i++)
@@ -120,6 +124,8 @@ public class GraphView extends javax.swing.JFrame
                 int y = rand.nextInt(50*wrapper.numNodes);
                 vertexLocations[i][0] = x;
                 vertexLocations[i][1] = y;
+                maxX = x > maxX ? x : maxX;
+                maxY = y > maxY ? y : maxY;
                 
                 verticies[i] = graph.insertVertex(parent, null, ((char) ('A'+i)), x, y, 50, 50, "ROUNDED");
             }
@@ -142,31 +148,62 @@ public class GraphView extends javax.swing.JFrame
         graphComponent.setDragEnabled(false);
         graphComponent.setEnabled(false);
         graphScrollPane.add(graphComponent);
-        graphScrollPane.setViewportView(graphComponent);        
+        graphScrollPane.setViewportView(graphComponent);       
+        this.setSize(maxX + 150, maxY + 150);
     }
     
-    //Currently uses dfs for traversal
-    private void traverseGraph(Object prevVertex, Node head)
+    Object v1;
+    
+    private void showAlgorithm()
     {
-        if(head.visited)
-            return;
         
-        head.visited = true;
-        System.out.println(head.name);
-        //Add node to graph
-        Object curVertex = null;
+        
+        ArrayList<String> order = GraphTools.dfs(wrapper.head);
+        
         graph.getModel().beginUpdate();
         try
         {
-            curVertex = graph.insertVertex(parent, null, head.name, 
-                                            vertexLocations[head.name.charAt(0)-'A'][0], 
-                                            vertexLocations[head.name.charAt(0)-'A'][1], 
-                                            50, 50, "RED_ROUNDED");
-            //Insert edge
-            if(prevVertex!=null)
+            v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() 
             {
-                graph.insertEdge(parent, null, null, prevVertex, curVertex, "OVERLAY_EDGE");
+                showAlgorithmOrder(order);
             }
+        };
+        timer.schedule(tt, animationSpeed);  
+        //graph.setCellStyle("ROUNDED", new Object[]{v1});
+    }
+    
+    private void showAlgorithmOrder(ArrayList<String> order)
+    {
+        if(order.size() == 1)
+            return;
+        
+        char curNodeID = order.get(0).charAt(0);
+        char nextNodeID = order.get(1).charAt(0);
+        
+        graph.getModel().beginUpdate();
+        try
+        {
+            Object v1 = graph.insertVertex(parent, null, curNodeID, 
+                                            vertexLocations[curNodeID - 'A'][0], 
+                                            vertexLocations[curNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            Object v2 = graph.insertVertex(parent, null, nextNodeID, 
+                                            vertexLocations[nextNodeID - 'A'][0], 
+                                            vertexLocations[nextNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
+            
         }
         catch(Exception e)
         {
@@ -177,19 +214,16 @@ public class GraphView extends javax.swing.JFrame
             graph.getModel().endUpdate();
         } 
         
-        for(Node node : head.adjacencyList)//visit each neighbor
+        TimerTask tt = new TimerTask()
         {
-            final Object next = curVertex;
-            TimerTask tt = new TimerTask() 
+            @Override
+            public void run() 
             {
-                @Override
-                public void run() 
-                {
-                    traverseGraph(next, node);
-                }
-            };
-            timer.schedule(tt, animationSpeed);//Wait for 1 second
-        }
+                order.remove(0);
+                showAlgorithmOrder(order);
+            }
+        };
+        timer.schedule(tt, animationSpeed);
     }
     
     /**
