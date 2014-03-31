@@ -176,7 +176,7 @@ public class GraphView extends javax.swing.JFrame
     
     private void showAlgorithm()
     {
-        ArrayList<String> order = GraphTools.dfs(wrapper.head);
+        ArrayList<String[]> order = GraphTools.dfs(wrapper.head);
         
         graph.getModel().beginUpdate();
         try
@@ -187,11 +187,16 @@ public class GraphView extends javax.swing.JFrame
         {
             graph.getModel().endUpdate();
         } 
+        
+        if(wrapper.numNodes == 1)
+            return;
+        
         TimerTask tt = new TimerTask()
         {
             @Override
             public void run() 
             {
+                order.remove(0);
                 showAlgorithmOrder(order);
             }
         };
@@ -199,13 +204,13 @@ public class GraphView extends javax.swing.JFrame
         //graph.setCellStyle("ROUNDED", new Object[]{v1});
     }
     
-    private void showAlgorithmOrder(ArrayList<String> order)
+    private void showAlgorithmOrder(ArrayList<String[]> order)
     {
-        if(order.size() == 1)
+        if(order.size() == 0)
             return;
         
-        char curNodeID = order.get(0).charAt(0);
-        char nextNodeID = order.get(1).charAt(0);
+        char curNodeID = order.get(0)[0].charAt(0);
+        char nextNodeID = order.get(0)[1].charAt(0);
         
         graph.getModel().beginUpdate();
         try

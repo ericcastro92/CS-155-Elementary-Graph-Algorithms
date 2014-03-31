@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class GraphTools 
 {
-    private static ArrayList<String> order;
+    private static ArrayList<String[]> order;
     
     /**
      * Generates a graph given the number of nodes and edges
@@ -99,7 +99,7 @@ public class GraphTools
                 @Override
                 public int compare(Node n1, Node n2) 
                 {
-                    return n1.name.charAt(0) - n2.name.charAt(0);
+                    return n2.name.charAt(0) - n1.name.charAt(0);
                 }
             });
         }
@@ -107,26 +107,32 @@ public class GraphTools
         return wrapper;
     }
 
-    public static ArrayList<String> dfs(Node head)
+    public static ArrayList<String[]> dfs(Node head)
     {
         System.out.println("==========DFS==========");
-        order = new ArrayList<String>();
-        dfsHelper(head);
+        order = new ArrayList<>();
+        dfsHelper(null, head);
         System.out.println("=======================");
+        for(int i=0;i<order.size();i++)
+            System.out.println(Arrays.toString(order.get(i)));
         return order;
     }
 
-    private static void dfsHelper(Node head)
+    private static void dfsHelper(Node src, Node head)
     {
         if(head.visited)
             return;
 
-        order.add(head.name);
-        head.visited = true;
         System.out.println(head.name);
-
+        if(src==null)
+            order.add(new String[]{"", head.name});
+        else
+            order.add(new String[]{src.name, head.name});
+        
+        head.visited = true;
+        
         for(Node node : head.adjacencyList)
-            dfsHelper(node);
+            dfsHelper(head, node);
     }
 
     public static void resetNodes(ArrayList<Node> nodes)
