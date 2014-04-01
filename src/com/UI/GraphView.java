@@ -98,6 +98,7 @@ public class GraphView extends javax.swing.JFrame
         //Overlay edge
         style = new HashMap<>();
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        
         stylesheet.putCellStyle("OVERLAY_EDGE", style);
     }
 
@@ -182,6 +183,7 @@ public class GraphView extends javax.swing.JFrame
         try
         {
             v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
+            appendToLog(" A");
         }
         finally
         {
@@ -225,6 +227,8 @@ public class GraphView extends javax.swing.JFrame
                                             vertexLocations[nextNodeID - 'A'][1], 
                                             50, 50, "RED_ROUNDED");
             
+            appendToLog(", "+nextNodeID);
+            
             graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
             
         }
@@ -249,6 +253,18 @@ public class GraphView extends javax.swing.JFrame
         timer.schedule(tt, animationSpeed);
     }
     
+    private void appendToLog(String text)
+    {
+        String temp = logLabel.getText();
+        temp+=text;
+        logLabel.setText(temp);
+    }
+    
+    private void log(String text)
+    {
+        logLabel.setText(text);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -263,6 +279,8 @@ public class GraphView extends javax.swing.JFrame
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         startButton = new javax.swing.JButton();
+        logScrollPane = new javax.swing.JScrollPane();
+        logLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Graph");
@@ -286,6 +304,9 @@ public class GraphView extends javax.swing.JFrame
             }
         });
 
+        logLabel.setText("Order: ");
+        logScrollPane.setViewportView(logLabel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -300,13 +321,16 @@ public class GraphView extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(51, 51, 51))
+            .addComponent(logScrollPane)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(275, Short.MAX_VALUE)
+                .addContainerGap(247, Short.MAX_VALUE)
+                .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(5, 5, 5)
@@ -319,8 +343,8 @@ public class GraphView extends javax.swing.JFrame
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                    .addGap(43, 43, 43)))
+                    .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                    .addGap(77, 77, 77)))
         );
 
         pack();
@@ -334,6 +358,8 @@ public class GraphView extends javax.swing.JFrame
     private javax.swing.JScrollPane graphScrollPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel logLabel;
+    private javax.swing.JScrollPane logScrollPane;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
