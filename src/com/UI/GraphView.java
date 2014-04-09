@@ -27,6 +27,9 @@ import javax.swing.event.ChangeEvent;
  */
 public class GraphView extends javax.swing.JFrame 
 {   
+    public final static int DFS = 1;
+    public final static int BFS = 2;
+    
     private final Timer timer;
     
     private final mxGraph graph;
@@ -38,13 +41,17 @@ public class GraphView extends javax.swing.JFrame
     private int maxX;
     private int maxY;
     
+    private int selectedAlgorithm = 0;
+    
     /**
      * Creates new form GraphView
      * @param wrapper
      * @param title
      */
-    public GraphView(GraphWrapper wrapper, String title) 
+    public GraphView(GraphWrapper wrapper, int algorithm) 
     {
+        selectedAlgorithm = algorithm;
+        
         this.wrapper = wrapper;
         timer = new Timer();
         vertexLocations = new int[wrapper.numNodes][2];
@@ -56,7 +63,12 @@ public class GraphView extends javax.swing.JFrame
         buildStyles();
         buildGraph();
         
-        setTitle(title);
+        switch(selectedAlgorithm)
+        {
+            case DFS: setTitle("Depth First Search"); break;
+            case BFS: setTitle("Breadth First Search"); break;
+            default: setTitle("Error"); break;
+        }
     }
     
     private void initCustomComponents()
@@ -69,15 +81,17 @@ public class GraphView extends javax.swing.JFrame
         speedSlider.setSnapToTicks(true);
         speedSlider.setValue(3);
         speedSlider.addChangeListener((ChangeEvent e) -> {
-            animationSpeed = (6 - speedSlider.getValue()) * 1000;
+            switch(speedSlider.getValue())
+            {
+                case 1: animationSpeed = 2500;break;
+                case 2: animationSpeed = 2000;break;
+                case 3: animationSpeed = 1500;break;
+                case 4: animationSpeed = 1000;break;
+                case 5: animationSpeed = 500;break;
+            }
             System.out.println(animationSpeed);
         });
     }
-    
-    /*private void showAlgorithm()
-    {
-        traverseGraph(null, wrapper.head);
-    }*/
     
     private void buildStyles()
     {
@@ -170,7 +184,7 @@ public class GraphView extends javax.swing.JFrame
         graphComponent.setEnabled(false);
         graphScrollPane.add(graphComponent);
         graphScrollPane.setViewportView(graphComponent);       
-        this.setSize(maxX + 150, maxY + 150);
+        this.setSize(maxX + 150, maxY + 200);
     }
     
     Object v1;

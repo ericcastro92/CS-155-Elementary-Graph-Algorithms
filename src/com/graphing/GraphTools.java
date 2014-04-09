@@ -25,13 +25,11 @@ public class GraphTools
             return null;
 
         Node[] nodes = new Node[numNodes];
-        boolean[] connectedMST = new boolean[numNodes];//Keep check if node 'n' is connected to the graph
         boolean[][] connected = new boolean[numNodes][numNodes];//Keeps track of created edges
         char label = 'A';
 
         //Generate the head
         nodes[0] = new Node((label++)+"");
-        connectedMST[0] = true;
         for(int i=0;i<numNodes;i++)
             connected[i][i] = true;
 
@@ -98,43 +96,57 @@ public class GraphTools
         return wrapper;
     }
 
-    public static ArrayList<String[]> dfs(Node head)
+    public static ArrayList<String[]> dfs(Node root)
     {
         System.out.println("==========DFS==========");
         order = new ArrayList<>();
-        dfsHelper(null, head);
+        dfsHelper(null, root);
         System.out.println("=======================");
         for(int i=0;i<order.size();i++)
             System.out.println(Arrays.toString(order.get(i)));
         return order;
     }
 
-    private static void dfsHelper(Node src, Node head)
+    private static void dfsHelper(Node src, Node root)
     {
-        if(head.visited)
+        if(root.visited)
             return;
 
-        System.out.println(head.name);
+        System.out.println(root.name);
         if(src==null)
-            order.add(new String[]{"", head.name});
+            order.add(new String[]{"", root.name});
         else
-            order.add(new String[]{src.name, head.name});
+            order.add(new String[]{src.name, root.name});
         
-        head.visited = true;
+        root.visited = true;
         
-        for(Node node : head.adjacencyList)
-            dfsHelper(head, node);
+        for(Node node : root.adjacencyList)
+            dfsHelper(root, node);
     }
 
-    public static void bfs(Node head)
+    public static void bfs(Node root)
     {
         System.out.println("==========DFS==========");
-        bfsHelper(head);
+        //Visit root node
+        root.visited = true;
+        System.out.println(root.name);
+        bfsHelper(root);
         System.out.println("=======================");
     }
     
-    private static void bfsHelper(Node head)
+    private static void bfsHelper(Node root)
     {
+        for(Node node : root.adjacencyList)
+        {
+            if(node.visited)
+                continue;
+            
+            node.visited = true;
+            System.out.println(node.name);
+        }
+        
+        for(Node node : root.adjacencyList)
+            bfsHelper(node);
         
     }
     

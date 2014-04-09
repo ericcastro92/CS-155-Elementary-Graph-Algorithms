@@ -93,6 +93,11 @@ public class MainView extends javax.swing.JFrame
         });
 
         bfsButton.setText("Breadth First Search");
+        bfsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfsButtonActionPerformed(evt);
+            }
+        });
 
         nodeSizeLabel.setText("10");
 
@@ -170,15 +175,34 @@ public class MainView extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void dfsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsButtonActionPerformed
-        GraphWrapper wrapper = GraphTools.generateGraph(nodeSlider.getValue(), edgeSlider.getValue());
+        GraphWrapper wrapper = GraphTools.generateGraph(nodeSlider.getValue(), 
+                                                        edgeSlider.getValue());
         
-        GraphView frame = new GraphView(wrapper, "Depth First Search");
-        int x = (Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2;
-        int y = (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2;
+        GraphView frame = new GraphView(wrapper, GraphView.DFS);
+        int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
+        int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();
+        
+        int x = (screenWidth)/2;
+        int y = (screenHeight)/2;
        
         frame.setLocation(x, y);      
         frame.setVisible(true);
     }//GEN-LAST:event_dfsButtonActionPerformed
+
+    private void bfsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfsButtonActionPerformed
+        GraphWrapper wrapper = GraphTools.generateGraph(nodeSlider.getValue(), 
+                                                        edgeSlider.getValue());
+        
+        GraphView frame = new GraphView(wrapper, GraphView.BFS);
+        int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
+        int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();
+        
+        int x = (screenWidth)/2;
+        int y = (screenHeight)/2;
+       
+        frame.setLocation(x, y);      
+        frame.setVisible(true);
+    }//GEN-LAST:event_bfsButtonActionPerformed
     
     /**
      * @param args the command line arguments
