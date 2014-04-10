@@ -12,6 +12,7 @@ import com.graphing.Node;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.util.HashMap;
 import javax.swing.event.ChangeEvent;
@@ -63,14 +64,20 @@ public class MainView extends javax.swing.JFrame
     private void initComponents() {
 
         nodeSlider = new javax.swing.JSlider();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        nodesLabel = new javax.swing.JLabel();
+        algorithmsLabel = new javax.swing.JLabel();
         dfsButton = new javax.swing.JButton();
         bfsButton = new javax.swing.JButton();
         nodeSizeLabel = new javax.swing.JLabel();
         edgeSlider = new javax.swing.JSlider();
         edgeSizeLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        edgesLabel = new javax.swing.JLabel();
+        creditLabel = new javax.swing.JLabel();
+        mainMenu = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        quiteMenuItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Graph Visualizer");
@@ -81,9 +88,9 @@ public class MainView extends javax.swing.JFrame
         nodeSlider.setMinorTickSpacing(1);
         nodeSlider.setSnapToTicks(true);
 
-        jLabel1.setText("Nodes:");
+        nodesLabel.setText("Nodes:");
 
-        jLabel2.setText("Algorithms");
+        algorithmsLabel.setText("Algorithms");
 
         dfsButton.setText("Depth First Search");
         dfsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -111,23 +118,51 @@ public class MainView extends javax.swing.JFrame
 
         edgeSizeLabel.setText("9");
 
-        jLabel3.setText("Edges:");
+        edgesLabel.setText("Edges:");
+
+        creditLabel.setText("Castro, Yee 2014");
+
+        fileMenu.setText("File");
+
+        quiteMenuItem.setText("Quit");
+        quiteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quiteMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(quiteMenuItem);
+
+        mainMenu.add(fileMenu);
+
+        helpMenu.setText("Help");
+
+        aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(aboutMenuItem);
+
+        mainMenu.add(helpMenu);
+
+        setJMenuBar(mainMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(nodesLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(nodeSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(edgesLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(edgeSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,38 +172,40 @@ public class MainView extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(86, 86, 86)
-                                .addComponent(jLabel2))
+                                .addGap(80, 80, 80)
+                                .addComponent(algorithmsLabel))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
+                                .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(bfsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dfsButton))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                    .addComponent(dfsButton)))
+                            .addComponent(creditLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nodesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(nodeSizeLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nodeSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
+                        .addComponent(nodeSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edgesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(edgeSizeLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(edgeSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(algorithmsLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dfsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addComponent(dfsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bfsButton)
-                .addGap(197, 197, 197))
+                .addGap(175, 175, 175)
+                .addComponent(creditLabel)
+                .addContainerGap())
         );
 
         pack();
@@ -179,14 +216,7 @@ public class MainView extends javax.swing.JFrame
                                                         edgeSlider.getValue());
         
         GraphView frame = new GraphView(wrapper, GraphView.DFS);
-        int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
-        int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();
-        
-        int x = (screenWidth)/2;
-        int y = (screenHeight)/2;
-       
-        frame.setLocation(x, y);      
-        frame.setVisible(true);
+        displayFrame(frame);
     }//GEN-LAST:event_dfsButtonActionPerformed
 
     private void bfsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfsButtonActionPerformed
@@ -194,6 +224,20 @@ public class MainView extends javax.swing.JFrame
                                                         edgeSlider.getValue());
         
         GraphView frame = new GraphView(wrapper, GraphView.BFS);
+        displayFrame(frame);
+    }//GEN-LAST:event_bfsButtonActionPerformed
+
+    private void quiteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quiteMenuItemActionPerformed
+        
+    }//GEN-LAST:event_quiteMenuItemActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        AboutFrame frame = new AboutFrame();
+        displayFrame(frame);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+    
+    private void displayFrame(Frame frame)
+    {
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();
         
@@ -202,7 +246,7 @@ public class MainView extends javax.swing.JFrame
        
         frame.setLocation(x, y);      
         frame.setVisible(true);
-    }//GEN-LAST:event_bfsButtonActionPerformed
+    }
     
     /**
      * @param args the command line arguments
@@ -249,14 +293,20 @@ public class MainView extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JLabel algorithmsLabel;
     private javax.swing.JButton bfsButton;
+    private javax.swing.JLabel creditLabel;
     private javax.swing.JButton dfsButton;
     private javax.swing.JLabel edgeSizeLabel;
     private javax.swing.JSlider edgeSlider;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel edgesLabel;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuBar mainMenu;
     private javax.swing.JLabel nodeSizeLabel;
     private javax.swing.JSlider nodeSlider;
+    private javax.swing.JLabel nodesLabel;
+    private javax.swing.JMenuItem quiteMenuItem;
     // End of variables declaration//GEN-END:variables
 }
