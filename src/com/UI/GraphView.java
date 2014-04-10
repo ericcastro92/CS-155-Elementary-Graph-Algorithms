@@ -32,7 +32,6 @@ public class GraphView extends javax.swing.JFrame
     public final static int TOPOLOGICAL = 3;
     
     private final Timer timer;
-    
     private final mxGraph graph;
     private final GraphWrapper wrapper;
     private Object parent;
@@ -43,6 +42,7 @@ public class GraphView extends javax.swing.JFrame
     private int maxY;
     
     private int selectedAlgorithm = 0;
+    private boolean started = false;
     
     /**
      * Creates new form GraphView
@@ -397,6 +397,11 @@ public class GraphView extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        if(started)
+            return;
+        
+        started = true;
+        
         switch(selectedAlgorithm)
         {
             case DFS: showAlgorithmDFS(); break;
