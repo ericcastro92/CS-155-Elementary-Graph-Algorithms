@@ -189,9 +189,40 @@ public class GraphView extends javax.swing.JFrame
     
     Object v1;
     
-    private void showAlgorithm()
+    private void showAlgorithmDFS()
     {
         ArrayList<String[]> order = GraphTools.dfs(wrapper.head);
+        
+        graph.getModel().beginUpdate();
+        try
+        {
+            v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
+            appendToLog(" A");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+        
+        if(wrapper.numNodes == 1)
+            return;
+        
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+                order.remove(0);
+                showAlgorithmOrder(order);
+            }
+        };
+        timer.schedule(tt, animationSpeed);  
+        //graph.setCellStyle("ROUNDED", new Object[]{v1});
+    }
+    
+    private void showAlgorithmBFS()
+    {
+        ArrayList<String[]> order = GraphTools.bfs(wrapper.head);
         
         graph.getModel().beginUpdate();
         try
@@ -365,7 +396,12 @@ public class GraphView extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        showAlgorithm();
+        switch(selectedAlgorithm)
+        {
+            case DFS: showAlgorithmDFS(); break;
+            case BFS: showAlgorithmBFS(); break;
+        }
+        
     }//GEN-LAST:event_startButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
