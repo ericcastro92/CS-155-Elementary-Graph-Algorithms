@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.UI;
 
 import com.graphing.GraphTools;
@@ -24,59 +25,55 @@ import javax.swing.event.ChangeEvent;
  *
  * @author ericcastro
  */
-public class GraphView extends javax.swing.JFrame {
-
-    boolean started = false;
+public class GraphView extends javax.swing.JFrame 
+{   
     public final static int DFS = 1;
     public final static int BFS = 2;
-
+    public final static int TOPOLOGICAL = 3;
+    
     private final Timer timer;
-
+    
     private final mxGraph graph;
     private final GraphWrapper wrapper;
     private Object parent;
-
+    
     private final int[][] vertexLocations;
     private int animationSpeed;
     private int maxX;
     private int maxY;
-
+    
     private int selectedAlgorithm = 0;
-
+    
     /**
      * Creates new form GraphView
-     *
      * @param wrapper
      * @param title
      */
-    public GraphView(GraphWrapper wrapper, int algorithm) {
+    public GraphView(GraphWrapper wrapper, int algorithm) 
+    {
         selectedAlgorithm = algorithm;
-
+        
         this.wrapper = wrapper;
         timer = new Timer();
         vertexLocations = new int[wrapper.numNodes][2];
-
+        
         initComponents();
         initCustomComponents();
-
+        
         graph = new mxGraph();
         buildStyles();
         buildGraph();
-
-        switch (selectedAlgorithm) {
-            case DFS:
-                setTitle("Depth First Search");
-                break;
-            case BFS:
-                setTitle("Breadth First Search");
-                break;
-            default:
-                setTitle("Error");
-                break;
+        
+        switch(selectedAlgorithm)
+        {
+            case DFS: setTitle("Depth First Search"); break;
+            case BFS: setTitle("Breadth First Search"); break;
+            default: setTitle("Error"); break;
         }
     }
-
-    private void initCustomComponents() {
+    
+    private void initCustomComponents()
+    {
         animationSpeed = 3000;
         //Set up speed slider
         speedSlider.setMaximum(5);
@@ -85,64 +82,57 @@ public class GraphView extends javax.swing.JFrame {
         speedSlider.setSnapToTicks(true);
         speedSlider.setValue(3);
         speedSlider.addChangeListener((ChangeEvent e) -> {
-            switch (speedSlider.getValue()) {
-                case 1:
-                    animationSpeed = 2500;
-                    break;
-                case 2:
-                    animationSpeed = 2000;
-                    break;
-                case 3:
-                    animationSpeed = 1500;
-                    break;
-                case 4:
-                    animationSpeed = 1000;
-                    break;
-                case 5:
-                    animationSpeed = 500;
-                    break;
+            switch(speedSlider.getValue())
+            {
+                case 1: animationSpeed = 2500;break;
+                case 2: animationSpeed = 2000;break;
+                case 3: animationSpeed = 1500;break;
+                case 4: animationSpeed = 1000;break;
+                case 5: animationSpeed = 500;break;
             }
             System.out.println(animationSpeed);
         });
     }
-
-    private void buildStyles() {
+    
+    private void buildStyles()
+    {
         mxStylesheet stylesheet = graph.getStylesheet();
         HashMap<String, Object> style = new HashMap<>();
-
+        
         //Default rounded style
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
         stylesheet.putCellStyle("ROUNDED", style);
-
+        
         //Red rounded style
         style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
         style.put(mxConstants.STYLE_FILLCOLOR, "#FF0000");
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
         stylesheet.putCellStyle("RED_ROUNDED", style);
-
+        
         //Overlay edge
         style = new HashMap<>();
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
-
+        
         stylesheet.putCellStyle("OVERLAY_EDGE", style);
     }
 
-    private void buildGraph() {
+    private void buildGraph()
+    {
         int nodeSize = 50;
         int chartSpacing = 25;
-
+                
         int chartSize = wrapper.numNodes / 2;
-        if (chartSize * chartSize < wrapper.numNodes) {
-            chartSize += 1;
-        }
-
+        if(chartSize * chartSize < wrapper.numNodes)
+            chartSize+=1;
+         
         boolean[][] placementChart = new boolean[chartSize][chartSize];
-
+        
         parent = graph.getDefaultParent();
 
         graph.getModel().beginUpdate();
-        try {
+        try
+        {
             Random rand = new Random();
             Object[] verticies = new Object[wrapper.numNodes];
             //Place head in top right location
@@ -152,152 +142,175 @@ public class GraphView extends javax.swing.JFrame {
             vertexLocations[0][1] = 20;
             maxX = 150;
             maxY = 150;
-
+            
             //Place other nodes randomly in the view
-            for (int i = 1; i < wrapper.numNodes; i++) {
+            for(int i=1;i<wrapper.numNodes;i++)
+            {
                 int x = 0;
                 int y = 0;
-                while (placementChart[x][y]) {
+                while(placementChart[x][y])
+                {
                     x = rand.nextInt(chartSize);
                     y = rand.nextInt(chartSize);
                 }
                 placementChart[x][y] = true;
-
+                
                 x = (x * 50) + (x * 25) + 20;
                 y = (y * 50) + (y * 25) + 20;
-
+                
                 vertexLocations[i][0] = x;
                 vertexLocations[i][1] = y;
                 maxX = x > maxX ? x : maxX;
                 maxY = y > maxY ? y : maxY;
-
-                verticies[i] = graph.insertVertex(parent, null, ((char) ('A' + i)), x, y, 50, 50, "ROUNDED");
+                
+                verticies[i] = graph.insertVertex(parent, null, ((char) ('A'+i)), x, y, 50, 50, "ROUNDED");
             }
-
+            
+            
             //Add edges between nodes
-            for (int i = 0; i < wrapper.numNodes; i++) {
-                for (int j = 0; j < wrapper.numNodes; j++) {
-                    if (wrapper.connections[i][j] && i != j) {
+            for(int i=0;i<wrapper.numNodes;i++)
+                for(int j=0;j<wrapper.numNodes;j++)
+                {
+                    if(wrapper.connections[i][j] && i != j)
                         graph.insertEdge(parent, null, null, verticies[i], verticies[j]);
-                    }
                 }
-            }
-        } finally {
+        }
+        finally
+        {
             graph.getModel().endUpdate();
         }
-
+        
         mxGraphComponent graphComponent = new mxGraphComponent(graph);
         graphComponent.setDragEnabled(false);
         graphComponent.setEnabled(false);
         graphScrollPane.add(graphComponent);
-        graphScrollPane.setViewportView(graphComponent);
+        graphScrollPane.setViewportView(graphComponent);       
         this.setSize(maxX + 150, maxY + 200);
     }
-
+    
     Object v1;
-
-    private void showAlgorithmDFS() {
+    
+    private void showAlgorithmDFS()
+    {
         ArrayList<String[]> order = GraphTools.dfs(wrapper.head);
-
+        
         graph.getModel().beginUpdate();
-        try {
+        try
+        {
             v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
             appendToLog(" A");
-        } finally {
+        }
+        finally
+        {
             graph.getModel().endUpdate();
-        }
-
-        if (wrapper.numNodes == 1) {
+        } 
+        
+        if(wrapper.numNodes == 1)
             return;
-        }
-
-        TimerTask tt = new TimerTask() {
+        
+        TimerTask tt = new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run() 
+            {
                 order.remove(0);
                 showAlgorithmOrder(order);
             }
         };
-        timer.schedule(tt, animationSpeed);
+        timer.schedule(tt, animationSpeed);  
         //graph.setCellStyle("ROUNDED", new Object[]{v1});
     }
-
-    private void showAlgorithmBFS() {
+    
+    private void showAlgorithmBFS()
+    {
         ArrayList<String[]> order = GraphTools.bfs(wrapper.head);
-
+        
         graph.getModel().beginUpdate();
-        try {
+        try
+        {
             v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
             appendToLog(" A");
-        } finally {
+        }
+        finally
+        {
             graph.getModel().endUpdate();
-        }
-
-        if (wrapper.numNodes == 1) {
+        } 
+        
+        if(wrapper.numNodes == 1)
             return;
-        }
-
-        TimerTask tt = new TimerTask() {
+        
+        TimerTask tt = new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run() 
+            {
                 order.remove(0);
                 showAlgorithmOrder(order);
             }
         };
-        timer.schedule(tt, animationSpeed);
+        timer.schedule(tt, animationSpeed);  
         //graph.setCellStyle("ROUNDED", new Object[]{v1});
     }
-
-    private void showAlgorithmOrder(ArrayList<String[]> order) {
-        if (order.size() == 0) {
+    
+    private void showAlgorithmOrder(ArrayList<String[]> order)
+    {
+        if(order.size() == 0)
             return;
-        }
-
+        
         char curNodeID = order.get(0)[0].charAt(0);
         char nextNodeID = order.get(0)[1].charAt(0);
-
+        
         graph.getModel().beginUpdate();
-        try {
-            Object v1 = graph.insertVertex(parent, null, curNodeID,
-                    vertexLocations[curNodeID - 'A'][0],
-                    vertexLocations[curNodeID - 'A'][1],
-                    50, 50, "RED_ROUNDED");
-
-            Object v2 = graph.insertVertex(parent, null, nextNodeID,
-                    vertexLocations[nextNodeID - 'A'][0],
-                    vertexLocations[nextNodeID - 'A'][1],
-                    50, 50, "RED_ROUNDED");
-
-            appendToLog(", " + nextNodeID);
-
+        try
+        {
+            Object v1 = graph.insertVertex(parent, null, curNodeID, 
+                                            vertexLocations[curNodeID - 'A'][0], 
+                                            vertexLocations[curNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            Object v2 = graph.insertVertex(parent, null, nextNodeID, 
+                                            vertexLocations[nextNodeID - 'A'][0], 
+                                            vertexLocations[nextNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            appendToLog(", "+nextNodeID);
+            
             graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
-
-        } catch (Exception e) {
-            System.out.println("Graph Exception");
-        } finally {
-            graph.getModel().endUpdate();
+            
         }
-
-        TimerTask tt = new TimerTask() {
+        catch(Exception e)
+        {
+            System.out.println("Graph Exception");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+        
+        TimerTask tt = new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run() 
+            {
                 order.remove(0);
                 showAlgorithmOrder(order);
             }
         };
         timer.schedule(tt, animationSpeed);
     }
-
-    private void appendToLog(String text) {
+    
+    private void appendToLog(String text)
+    {
         String temp = logLabel.getText();
-        temp += text;
+        temp+=text;
         logLabel.setText(temp);
     }
-
-    private void log(String text) {
+    
+    private void log(String text)
+    {
         logLabel.setText(text);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -384,19 +397,12 @@ public class GraphView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        switch (selectedAlgorithm) {
-            case DFS:
-                if(!started)
-                showAlgorithmDFS();
-                started = true;
-                break;
-            case BFS:
-                if(!started)
-                showAlgorithmBFS();
-                started = true;
-                break;
+        switch(selectedAlgorithm)
+        {
+            case DFS: showAlgorithmDFS(); break;
+            case BFS: showAlgorithmBFS(); break;
         }
-
+        
     }//GEN-LAST:event_startButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
