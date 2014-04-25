@@ -228,6 +228,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Depth First Search"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dfsRadioActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="bfsRadio">
       <Properties>
@@ -251,11 +254,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Quiz"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quizButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="dfsInfoButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="?"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dfsInfoButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bfsInfoButton">
       <Properties>

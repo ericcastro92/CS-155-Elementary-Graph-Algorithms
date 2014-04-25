@@ -6,11 +6,12 @@ import java.util.ArrayList;
  *
  * @author ericcastro
  */
-public class Main 
-{
-    public static void main(String[] args) 
-    {        
+public class Main {
+
+    public static void main(String[] args) {
         ArrayList<Node> nodes = new ArrayList<Node>();
+        ArrayList<Quiz> quiz = new ArrayList<Quiz>();
+        quizMaker();
         Node a = new Node("A");
         Node b = new Node("B");
         Node c = new Node("C");
@@ -19,7 +20,7 @@ public class Main
         Node f = new Node("F");
         Node g = new Node("G");
         Node h = new Node("H");
-        
+
         nodes.add(a);
         nodes.add(b);
         nodes.add(c);
@@ -39,11 +40,16 @@ public class Main
 
         GraphTools.dfs(a);
         GraphTools.resetNodes(nodes);
-        
+
         GraphTools.bfs(a);
         GraphTools.resetNodes(nodes);
-        
+
         //Node head = GraphTools.generateGraph(4, 6).head;
         //GraphTools.dfs(head);
+    }
+
+    public static void quizMaker() {
+        Quiz temp = new Quiz();
+        temp.setAnswer1("A");
     }
 }

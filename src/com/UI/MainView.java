@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.UI;
 
 import com.graphing.GraphTools;
@@ -24,95 +23,90 @@ import javax.swing.event.ChangeListener;
  *
  * @author ericcastro
  */
-public class MainView extends javax.swing.JFrame 
-{
+public class MainView extends javax.swing.JFrame {
+
     private ButtonGroup algorithmSelection;
-    
+
     private final ChangeListener defaultNodeListener;
     private final ChangeListener topologicalNodeListener;
     private final ChangeListener defaultEdgeListener;
     private final ChangeListener topologicalEdgeListener;
-    
+
     private boolean isDefault;
-    
+
     /**
      * Creates new form GraphView
      */
-    public MainView() 
-    {
+    public MainView() {
         initComponents();
-        
+
         dfsRadio.setMnemonic(GraphView.DFS);
         bfsRadio.setMnemonic(GraphView.BFS);
         topologicalRadio.setMnemonic(GraphView.TOPOLOGICAL);
-        
+
         algorithmSelection = new ButtonGroup();
         algorithmSelection.add(bfsRadio);
         algorithmSelection.add(dfsRadio);
         algorithmSelection.add(topologicalRadio);
-        dfsRadio.setSelected(true); 
-        
+        dfsRadio.setSelected(true);
+
         // <editor-fold defaultstate="collapsed" desc="Change Listeners">
-        defaultNodeListener = new ChangeListener(){
+        defaultNodeListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) 
-            {
+            public void stateChanged(ChangeEvent e) {
                 int value = nodeSlider.getValue();
-                nodeSizeLabel.setText(value+"");
+                nodeSizeLabel.setText(value + "");
 
                 edgeSlider.setMinimum(value - 1);
                 edgeSlider.setMaximum(value * (value - 1));
                 edgeSlider.setValue(value - 1);
             }
         };
-        defaultEdgeListener = new ChangeListener()
-        {
+        defaultEdgeListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) 
-            {
+            public void stateChanged(ChangeEvent e) {
                 int value = edgeSlider.getValue();
-                edgeSizeLabel.setText(value+"");
+                edgeSizeLabel.setText(value + "");
             }
         };
-        
-        topologicalNodeListener = new ChangeListener()
-        {
+
+        topologicalNodeListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) 
-            {
+            public void stateChanged(ChangeEvent e) {
                 int value = nodeSlider.getValue();
-                nodeSizeLabel.setText(value+"");
+                nodeSizeLabel.setText(value + "");
             }
         };
-        topologicalEdgeListener = new ChangeListener()
-        {
+        topologicalEdgeListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) 
-            {
-                if(isDefault)
+            public void stateChanged(ChangeEvent e) {
+                if (isDefault) {
                     return;
-                
+                }
+
                 int value = edgeSlider.getValue();
                 System.out.println("Topological Edge: " + value);
-                switch(value){
-                    case 1: edgeSizeLabel.setText("Random"); break;
-                    case 2: edgeSizeLabel.setText("Max"); break;
-                    default:break;
+                switch (value) {
+                    case 1:
+                        edgeSizeLabel.setText("Random");
+                        break;
+                    case 2:
+                        edgeSizeLabel.setText("Max");
+                        break;
+                    default:
+                        break;
                 }
             }
         };
         // </editor-fold>
-        
+
         setSliderDefaults();
         topologicalRadio.addChangeListener((ChangeEvent e) -> {
-            if(topologicalRadio.isSelected())
-            {
+            if (topologicalRadio.isSelected()) {
                 System.out.println("Topological");
                 setSliderTopological();
                 isDefault = false;
-            }
-            else
-            {
+            } else {
                 System.out.println("Default");
                 setSliderDefaults();
                 isDefault = true;
@@ -120,20 +114,19 @@ public class MainView extends javax.swing.JFrame
         });
     }
 
-    private void setSliderDefaults()
-    {           
+    private void setSliderDefaults() {
         nodeSlider.removeChangeListener(topologicalNodeListener);
         edgeSlider.removeChangeListener(topologicalEdgeListener);
-        
-        nodeSlider.addChangeListener(defaultNodeListener);        
+
+        nodeSlider.addChangeListener(defaultNodeListener);
         edgeSlider.addChangeListener(defaultEdgeListener);
-        
+
         nodeSlider.setMinimum(1);
         nodeSlider.setMaximum(20);
         nodeSlider.setMajorTickSpacing(1);
         nodeSlider.setSnapToTicks(true);
         nodeSlider.setValue(10);
-        
+
         edgeSlider.setMinimum(9);
         edgeSlider.setMaximum(90);
         nodeSlider.setMajorTickSpacing(1);
@@ -141,21 +134,21 @@ public class MainView extends javax.swing.JFrame
         edgeSlider.setValue(9);
         edgeSizeLabel.setText("9");
     }
-    
-    private void setSliderTopological()
-    {
+
+    private void setSliderTopological() {
         nodeSlider.removeChangeListener(defaultNodeListener);
         edgeSlider.removeChangeListener(defaultEdgeListener);
-        
+
         nodeSlider.addChangeListener(topologicalNodeListener);
         edgeSlider.addChangeListener(topologicalEdgeListener);
-        
+
         edgeSlider.setMinimum(1);
         edgeSlider.setMaximum(2);
         edgeSlider.setValue(1);
         edgeSlider.setSnapToTicks(true);
         edgeSizeLabel.setText("Random");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -217,6 +210,11 @@ public class MainView extends javax.swing.JFrame
         creditLabel.setText("Castro, Yee 2014");
 
         dfsRadio.setText("Depth First Search");
+        dfsRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dfsRadioActionPerformed(evt);
+            }
+        });
 
         bfsRadio.setText("Breadth FirstSearch");
 
@@ -230,8 +228,18 @@ public class MainView extends javax.swing.JFrame
         });
 
         quizButton.setText("Quiz");
+        quizButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quizButtonActionPerformed(evt);
+            }
+        });
 
         dfsInfoButton.setText("?");
+        dfsInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dfsInfoButtonActionPerformed(evt);
+            }
+        });
 
         bfsInfoButton.setText("?");
 
@@ -355,7 +363,7 @@ public class MainView extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
-        
+
     }//GEN-LAST:event_quitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -367,44 +375,57 @@ public class MainView extends javax.swing.JFrame
 
         GraphWrapper wrapper;
         GraphView frame = null;
-        
-        switch(algorithmSelection.getSelection().getMnemonic())
-        {
-            case GraphView.DFS: 
-                wrapper = GraphTools.generateGraph(nodeSlider.getValue(), 
-                                                    edgeSlider.getValue());
+
+        switch (algorithmSelection.getSelection().getMnemonic()) {
+            case GraphView.DFS:
+                wrapper = GraphTools.generateGraph(nodeSlider.getValue(),
+                        edgeSlider.getValue());
                 frame = new GraphView(wrapper, GraphView.DFS);
                 break;
             case GraphView.BFS:
-                wrapper = GraphTools.generateGraph(nodeSlider.getValue(), 
-                                                    edgeSlider.getValue());
+                wrapper = GraphTools.generateGraph(nodeSlider.getValue(),
+                        edgeSlider.getValue());
                 frame = new GraphView(wrapper, GraphView.BFS);
                 break;
             case GraphView.TOPOLOGICAL:
                 break;
-            default:break;
+            default:
+                break;
         }
-        
+
         displayFrame(frame);
     }//GEN-LAST:event_displayButtonActionPerformed
-    
-    private void displayFrame(Frame frame)
-    {
+
+    private void dfsInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsInfoButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dfsInfoButtonActionPerformed
+
+    private void dfsRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsRadioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dfsRadioActionPerformed
+
+    private void quizButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quizButtonActionPerformed
+        GraphWrapper wrapper;
+        QuizFrame frame = new QuizFrame();
+        
+        displayFrame(frame);
+    }//GEN-LAST:event_quizButtonActionPerformed
+
+    private void displayFrame(Frame frame) {
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();
-        
-        int x = (screenWidth)/2;
-        int y = (screenHeight)/2;
-       
-        frame.setLocation(x, y);      
+
+        int x = (screenWidth) / 2;
+        int y = (screenHeight) / 2;
+
+        frame.setLocation(x, y);
         frame.setVisible(true);
     }
-    
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) 
-    {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -429,15 +450,13 @@ public class MainView extends javax.swing.JFrame
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() 
-        {
-            public void run() 
-            {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
                 MainView view = new MainView();
-                int x = (Toolkit.getDefaultToolkit().getScreenSize().width - view.getWidth())/2;
-                int y = (Toolkit.getDefaultToolkit().getScreenSize().height - view.getHeight())/2;
-        
-                view.setLocation(x, y);     
+                int x = (Toolkit.getDefaultToolkit().getScreenSize().width - view.getWidth()) / 2;
+                int y = (Toolkit.getDefaultToolkit().getScreenSize().height - view.getHeight()) / 2;
+
+                view.setLocation(x, y);
                 view.setVisible(true);
                 view.setResizable(false);
             }
