@@ -49,56 +49,54 @@ public class QuizFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         questionBox = new javax.swing.JTextPane();
-        aButton = new javax.swing.JRadioButton();
-        bButton = new javax.swing.JRadioButton();
-        cButton = new javax.swing.JRadioButton();
-        dButton = new javax.swing.JRadioButton();
-        Submit = new javax.swing.JButton();
-        score = new javax.swing.JTextField();
+        answerOneButton = new javax.swing.JButton();
+        answerTwoButton = new javax.swing.JButton();
+        answerThreeButton = new javax.swing.JButton();
+        answerFourButton = new javax.swing.JButton();
+        scoreLabel = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         questionBox.setEditable(false);
         jScrollPane1.setViewportView(questionBox);
 
-        aButton.setText("jRadioButton1");
+        answerOneButton.setText("Answer 1");
 
-        bButton.setText("jRadioButton2");
-
-        cButton.setText("jRadioButton3");
-
-        dButton.setText("jRadioButton4");
-
-        Submit.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        Submit.setText("Submit");
-
-        score.setEditable(false);
-        score.setText("jTextField1");
-        score.addActionListener(new java.awt.event.ActionListener() {
+        answerTwoButton.setText("Answer 2");
+        answerTwoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scoreActionPerformed(evt);
+                answerTwoButtonActionPerformed(evt);
             }
         });
+
+        answerThreeButton.setText("Answer 3");
+
+        answerFourButton.setText("Answer 4");
+
+        scoreLabel.setText("Score: 0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dButton)
-                            .addComponent(cButton)
-                            .addComponent(bButton)
-                            .addComponent(aButton))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(score, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
-                        .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(95, 95, 95)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(answerFourButton)
+                                    .addComponent(answerThreeButton)
+                                    .addComponent(answerTwoButton)
+                                    .addComponent(answerOneButton)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(scoreLabel)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -106,27 +104,25 @@ public class QuizFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(aButton)
-                .addGap(18, 18, 18)
-                .addComponent(bButton)
-                .addGap(18, 18, 18)
-                .addComponent(cButton)
-                .addGap(18, 18, 18)
-                .addComponent(dButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Submit)
-                    .addComponent(score, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerOneButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerTwoButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerThreeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(answerFourButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(scoreLabel)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void scoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scoreActionPerformed
-        score.setText(totalscore + "/" + totalQs);
-    }//GEN-LAST:event_scoreActionPerformed
+    private void answerTwoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerTwoButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_answerTwoButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,13 +167,12 @@ public class QuizFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Submit;
-    private javax.swing.JRadioButton aButton;
-    private javax.swing.JRadioButton bButton;
-    private javax.swing.JRadioButton cButton;
-    private javax.swing.JRadioButton dButton;
+    private javax.swing.JButton answerFourButton;
+    private javax.swing.JButton answerOneButton;
+    private javax.swing.JButton answerThreeButton;
+    private javax.swing.JButton answerTwoButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane questionBox;
-    private javax.swing.JTextField score;
+    private javax.swing.JLabel scoreLabel;
     // End of variables declaration//GEN-END:variables
 }

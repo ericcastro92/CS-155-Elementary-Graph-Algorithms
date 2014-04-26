@@ -19,7 +19,7 @@ public class Node
 	
 	public boolean addNeighbor(Node node)
 	{
-		return adjacencyList.add(node);
+            return adjacencyList.add(node);
 	}
         
         @Override

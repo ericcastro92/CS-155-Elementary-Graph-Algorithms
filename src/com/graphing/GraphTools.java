@@ -107,13 +107,13 @@ public class GraphTools
         Random rand = new Random();
         
         //Creates a directed acyclic graph (dag)
-        int RAND_EDGES = 0;
-        int MAX_EDGES = 1;
+        final int RAND_EDGES = 0;
+        final int MAX_EDGES = 1;
                 
         int remainingNodes = numNodes;
         int levels = rand.nextInt(numNodes - 2) + 2;
         
-        ArrayList<ArrayList<Node>> nodes = new ArrayList<>();
+        ArrayList<ArrayList<TopologicalNode>> nodes = new ArrayList<>();
         
         boolean[][] connected = new boolean[numNodes][numNodes];//Keeps track of created edges
         char label = 'A';
@@ -122,7 +122,7 @@ public class GraphTools
         {   
             nodes.add(new ArrayList<>());
             //Add default node to the level
-            nodes.get(i).add(new Node(""+label++));
+            nodes.get(i).add(new TopologicalNode(""+label++));
             numNodes--;
         }
         
@@ -130,10 +130,25 @@ public class GraphTools
         while(numNodes-->0)
         {
             int level = rand.nextInt(levels);
-            nodes.get(level).add(new Node(""+label++));
+            nodes.get(level).add(new TopologicalNode(""+label++));
         }
 
         //TODO: Generate edges
+        switch(edgeSetting)
+        {
+            case RAND_EDGES:
+                
+                break;
+            case MAX_EDGES:
+                for(int parentLevel = 0; parentLevel < levels - 1; parentLevel++)
+                {
+                    for(TopologicalNode parent : nodes.get(parentLevel))
+                    {
+
+                    }
+                }
+                break;
+        }
 
         //return wrapper;
         return null;
