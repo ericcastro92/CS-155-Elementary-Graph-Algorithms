@@ -9,6 +9,8 @@ import java.util.Random;
 public class GraphTools 
 {
     private static ArrayList<String[]> order;
+    public static final int RAND_EDGES = 0;
+    public static final int MAX_EDGES = 1;
     
     /**
      * Generates a graph given the number of nodes and edges
@@ -106,11 +108,6 @@ public class GraphTools
     {
         Random rand = new Random();
         
-        //Creates a directed acyclic graph (dag)
-        final int RAND_EDGES = 0;
-        final int MAX_EDGES = 1;
-                
-        int remainingNodes = numNodes;
         int levels = rand.nextInt(numNodes - 2) + 2;
         
         ArrayList<ArrayList<TopologicalNode>> nodes = new ArrayList<>();
@@ -133,19 +130,28 @@ public class GraphTools
             nodes.get(level).add(new TopologicalNode(""+label++));
         }
 
-        //TODO: Generate edges
+        //TODO: Generate representation
         switch(edgeSetting)
         {
             case RAND_EDGES:
-                
-                break;
-            case MAX_EDGES:
                 for(int parentLevel = 0; parentLevel < levels - 1; parentLevel++)
                 {
                     for(TopologicalNode parent : nodes.get(parentLevel))
                     {
-
-                    }
+                        for(TopologicalNode child : nodes.get(parentLevel + 1))
+                        {
+                            if(rand.nextInt(10) >= 3)//Randomly add edges
+                                parent.addNeighbor(child);
+                        }
+                    } 
+                }
+                break;
+            case MAX_EDGES:
+                for(int parentLevel = 0; parentLevel < levels - 1; parentLevel++)
+                {   
+                    for(TopologicalNode parent : nodes.get(parentLevel))
+                        for(TopologicalNode child : nodes.get(parentLevel + 1))
+                            parent.addNeighbor(child);
                 }
                 break;
         }
