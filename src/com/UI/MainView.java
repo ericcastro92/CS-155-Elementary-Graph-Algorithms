@@ -7,7 +7,7 @@ package com.UI;
 
 import com.graphing.GraphTools;
 import com.graphing.GraphWrapper;
-import com.graphing.Node;
+import com.graphing.*;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
@@ -405,8 +405,9 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_dfsRadioActionPerformed
 
     private void quizButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quizButtonActionPerformed
-        GraphWrapper wrapper;
-        QuizFrame frame = new QuizFrame();
+        QuizTools qtools = new QuizTools();
+        qtools.main();
+        QuizFrame frame = new QuizFrame(qtools.quiz);
         
         displayFrame(frame);
     }//GEN-LAST:event_quizButtonActionPerformed

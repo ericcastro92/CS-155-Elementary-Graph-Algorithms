@@ -9,9 +9,8 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Node> nodes = new ArrayList<Node>();
-        ArrayList<Quiz> quiz = new ArrayList<Quiz>();
-        quizMaker();
+        ArrayList<Node> nodes = new ArrayList<>();
+        
         Node a = new Node("A");
         Node b = new Node("B");
         Node c = new Node("C");
@@ -47,9 +46,5 @@ public class Main {
         //Node head = GraphTools.generateGraph(4, 6).head;
         //GraphTools.dfs(head);
     }
-
-    public static void quizMaker() {
-        Quiz temp = new Quiz();
-        temp.setAnswer1("A");
-    }
+    
 }

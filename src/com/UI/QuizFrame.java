@@ -7,59 +7,81 @@ package com.UI;
 
 import java.awt.Toolkit;
 import javax.swing.event.ChangeEvent;
+import com.graphing.*;
+import java.awt.Button;
+import java.util.ArrayList;
+import javax.swing.ButtonGroup;
 
 /**
  *
- * @author Augusta Storme
+ * @author Jonathan Yee
  */
-public class QuizFrame extends javax.swing.JFrame 
-{
-    private int totalscore = 0;
-    private int totalQs = 5;
-    private int buttonSelection = 0;
+public class QuizFrame extends javax.swing.JFrame {
+
+    private static int totalscore = 0;
+    private static int buttonSelection = 0;
+    ArrayList<Quiz> q;
+    Quiz currQ = new Quiz();
+
+    private static ButtonGroup butGroup = new ButtonGroup();
 
     /**
      * Creates new form QuizFrame
+     *
+     * @param q
      */
-    public QuizFrame() 
-    {        
+    public QuizFrame(ArrayList<Quiz> qu) {
+        this.q = qu;
+        int size = q.size();
         initComponents();
-        aButton.addChangeListener((ChangeEvent e) -> {
-            if(aButton.isSelected())
-            {
-                buttonSelection = 1;
-                bButton.setSelected(false);
-                cButton.setSelected(false);
-                dButton.setSelected(false);
-            }
-        });
-        bButton.addChangeListener((ChangeEvent e) -> {
-            if(bButton.isSelected())
-            {
-                buttonSelection = 2;
-                aButton.setSelected(false);
-                cButton.setSelected(false);
-                dButton.setSelected(false);
-            }
-        });
-        cButton.addChangeListener((ChangeEvent e) -> {
-            if(cButton.isSelected())
-            {
-                buttonSelection = 3;
-                aButton.setSelected(false);
-                bButton.setSelected(false);
-                dButton.setSelected(false);
-            }
-        });
-        dButton.addChangeListener((ChangeEvent e) -> {
-            if(dButton.isSelected())
-            {
-                buttonSelection = 4;
-                aButton.setSelected(false);
-                bButton.setSelected(false);
-                cButton.setSelected(false);
-            }
-        });
+        butGroup.add(aButton);
+        butGroup.add(bButton);
+        butGroup.add(cButton);
+        butGroup.add(dButton);
+
+        for (int qCounter = 0; qCounter < size; qCounter++) {
+            currQ = q.get(qCounter);
+            qBox.setText(currQ.getQuestion());
+            aButton.setText(currQ.getAnswer1());
+            bButton.setText(currQ.getAnswer2());
+            cButton.setText(currQ.getAnswer3());
+            dButton.setText(currQ.getAnswer4());
+
+            aButton.addChangeListener((ChangeEvent e) -> {
+                if (aButton.isSelected()) {
+                    buttonSelection = 1;
+                    bButton.setSelected(false);
+                    cButton.setSelected(false);
+                    dButton.setSelected(false);
+                }
+            });
+            bButton.addChangeListener((ChangeEvent e) -> {
+                if (bButton.isSelected()) {
+                    buttonSelection = 2;
+                    aButton.setSelected(false);
+                    cButton.setSelected(false);
+                    dButton.setSelected(false);
+                }
+            });
+            cButton.addChangeListener((ChangeEvent e) -> {
+                if (cButton.isSelected()) {
+                    buttonSelection = 3;
+                    aButton.setSelected(false);
+                    bButton.setSelected(false);
+                    dButton.setSelected(false);
+                }
+            });
+            dButton.addChangeListener((ChangeEvent e) -> {
+                if (dButton.isSelected()) {
+                    buttonSelection = 4;
+                    aButton.setSelected(false);
+                    bButton.setSelected(false);
+                    cButton.setSelected(false);
+                }
+            });
+            
+            
+        }
     }
 
     /**
@@ -71,8 +93,6 @@ public class QuizFrame extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        questionBox = new javax.swing.JTextPane();
         aButton = new javax.swing.JRadioButton();
         bButton = new javax.swing.JRadioButton();
         cButton = new javax.swing.JRadioButton();
@@ -80,11 +100,10 @@ public class QuizFrame extends javax.swing.JFrame
         Submit = new javax.swing.JButton();
         scoreLabel = new javax.swing.JLabel();
         scoreValueLabel = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        qBox = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        questionBox.setEditable(false);
-        jScrollPane1.setViewportView(questionBox);
 
         aButton.setText("Answer A");
 
@@ -96,10 +115,21 @@ public class QuizFrame extends javax.swing.JFrame
 
         Submit.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Submit.setText("Submit");
+        Submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubmitActionPerformed(evt);
+            }
+        });
 
         scoreLabel.setText("Score:");
 
         scoreValueLabel.setText("0");
+
+        qBox.setEditable(false);
+        qBox.setColumns(20);
+        qBox.setRows(5);
+        qBox.setOpaque(false);
+        jScrollPane2.setViewportView(qBox);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,28 +138,28 @@ public class QuizFrame extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scoreLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scoreValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 180, Short.MAX_VALUE)
+                        .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dButton)
                             .addComponent(cButton)
                             .addComponent(bButton)
                             .addComponent(aButton))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scoreLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scoreValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 180, Short.MAX_VALUE)
-                        .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(aButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -152,49 +182,57 @@ public class QuizFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
+        if(currQ.getCorrect() == buttonSelection){
+            totalscore++;
+            scoreValueLabel.setText(String.valueOf(totalscore));
+        }
+    }//GEN-LAST:event_SubmitActionPerformed
+
+    private void displayNext() {
+
+    }
+
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments // public static void main(String
+     * args[]) { /* Set the Nimbus look and feel
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     // 
+     try {
+     for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+     if ("Nimbus".equals(info.getName())) {
+     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+     break;
+     }
+     }
+     } catch (ClassNotFoundException ex) {
+     java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (InstantiationException ex) {
+     java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (IllegalAccessException ex) {
+     java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+     java.util.logging.Logger.getLogger(QuizFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+     }
+     //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() 
-        {
-            public void run() 
-            {
-                QuizFrame view = new QuizFrame();
-                //new QuizFrame().setVisible(true);
-                int x = (Toolkit.getDefaultToolkit().getScreenSize().width - view.getWidth()) / 2;
-                int y = (Toolkit.getDefaultToolkit().getScreenSize().height - view.getHeight()) / 2;
+     /* Create and display the form 
+     java.awt.EventQueue.invokeLater(new Runnable() {
+     public void run() {
+     QuizFrame view = new QuizFrame();
+     new QuizFrame().setVisible(true);
+     int x = (Toolkit.getDefaultToolkit().getScreenSize().width - view.getWidth()) / 2;
+     int y = (Toolkit.getDefaultToolkit().getScreenSize().height - view.getHeight()) / 2;
 
-                view.setLocation(x, y);
-                view.setVisible(true);
-                view.setResizable(false);
-            }
-        });
-    }
+     view.setLocation(x, y);
+     view.setVisible(true);
+     view.setResizable(false);
+     }
+     });
+     }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Submit;
@@ -202,8 +240,8 @@ public class QuizFrame extends javax.swing.JFrame
     private javax.swing.JRadioButton bButton;
     private javax.swing.JRadioButton cButton;
     private javax.swing.JRadioButton dButton;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane questionBox;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea qBox;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JLabel scoreValueLabel;
     // End of variables declaration//GEN-END:variables
