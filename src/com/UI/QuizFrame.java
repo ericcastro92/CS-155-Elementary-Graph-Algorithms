@@ -188,6 +188,8 @@ public class QuizFrame extends javax.swing.JFrame {
             buttonSelection = 0;
         } else if (buttonSelection == 0) {
 
+        } else if (Submit.getText().equals("Quit")) {
+            
         } else {
             displayNext();
             buttonSelection = 0;
@@ -198,7 +200,7 @@ public class QuizFrame extends javax.swing.JFrame {
     private void displayNext() {
         if (qCounter >= q.size()) {
             qBox.setText("Congratulations! You finished the quiz. "
-                    + "Your score is " + String.valueOf(totalscore)+ " out of 10.");
+                    + "Your score is " + String.valueOf(totalscore) + " out of 10.");
             aButton.setText("");
             bButton.setText("");
             cButton.setText("");
@@ -207,7 +209,8 @@ public class QuizFrame extends javax.swing.JFrame {
             bButton.setVisible(false);
             cButton.setVisible(false);
             dButton.setVisible(false);
-            
+            Submit.setText("Quit");
+
         } else {
             currQ = q.get(qCounter);
             qBox.setText(currQ.getQuestion());
