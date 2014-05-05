@@ -39,15 +39,9 @@ public class QuizFrame extends javax.swing.JFrame {
         butGroup.add(bButton);
         butGroup.add(cButton);
         butGroup.add(dButton);
-
-        //for (int qCounter = 0; qCounter < size; qCounter++) {
+        setTitle("Elementary Graph Algorithms Quiz");
+  
         displayNext();
-        //currQ = q.get(qCounter);
-        //qBox.setText(currQ.getQuestion());
-        //aButton.setText(currQ.getAnswer1());
-        //bButton.setText(currQ.getAnswer2());
-        //cButton.setText(currQ.getAnswer3());
-        //dButton.setText(currQ.getAnswer4());
 
         aButton.addChangeListener((ChangeEvent e) -> {
             if (aButton.isSelected()) {

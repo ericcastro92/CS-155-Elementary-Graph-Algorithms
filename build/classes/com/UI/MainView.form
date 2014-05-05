@@ -89,7 +89,7 @@
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
+                              <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -119,18 +119,19 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="nodeSlider" pref="165" max="32767" attributes="0"/>
-                          <Component id="edgeSlider" pref="165" max="32767" attributes="0"/>
+                          <Component id="nodeSlider" pref="167" max="32767" attributes="0"/>
+                          <Component id="edgeSlider" pref="167" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="quizButton" alignment="1" min="-2" pref="140" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="creditLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="displayButton" alignment="1" min="-2" pref="140" max="-2" attributes="0"/>
+                          <Component id="displayButton" alignment="0" max="32767" attributes="0"/>
+                          <Component id="quizButton" alignment="0" max="32767" attributes="0"/>
+                          <Component id="exerciseButton" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -165,7 +166,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                       <Component id="nodeSizeLabel" max="32767" attributes="0"/>
@@ -179,11 +180,13 @@
                   <Component id="edgeSizeLabel" alignment="1" max="32767" attributes="0"/>
                   <Component id="edgesLabel" alignment="1" min="-2" pref="29" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="displayButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="quizButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="exerciseButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="33" max="32767" attributes="0"/>
               <Component id="creditLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -305,8 +308,16 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Componenets"/>
+        <Property name="text" type="java.lang.String" value="Components"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="exerciseButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Exercises"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exerciseButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
