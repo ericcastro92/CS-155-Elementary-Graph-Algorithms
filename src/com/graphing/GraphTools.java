@@ -175,8 +175,9 @@ public class GraphTools
         //initialize the nodes
         for(int i=0;i<nodes.length;i++)
         {
-            nodes[i] = new Node((label++)+"");
-            nodesT[i] = new Node((label++)+"");
+            String name = (label++)+"";
+            nodes[i] = new Node(name);
+            nodesT[i] = new Node(name);
         }
         
         boolean[][] connected = new boolean[8][8];
@@ -395,6 +396,11 @@ public class GraphTools
     private static ArrayList<String> scc;
     private int time;
     
+    /**
+     * Computers the strongly connected components of a graph
+     * @param forest Group of nodes that algorithm will act upon
+     * @param forestT Transpose of the group of node. 
+     */
     public void stronglyConnectedComponenets(Node[] forest, Node[] forestT)
     {
         System.out.println("==========Strongly Connected Components==========");
@@ -420,7 +426,7 @@ public class GraphTools
         //Order forest transpose by finish time
         ArrayList<Node> sorted = new ArrayList<>(Arrays.asList(forestT));
         sorted.sort((Node n1, Node n2) -> {
-            return n1.finishTime - n2.finishTime;
+            return n2.finishTime - n1.finishTime;
         });
         for(int i = 0;i<forestT.length;i++)
             forestT[i] = sorted.get(i);
@@ -439,6 +445,14 @@ public class GraphTools
             System.out.print(forestT[i].name+"|");
             System.out.printf("S: %d|F: %d\n", forestT[i].startTime, forestT[i].finishTime);
         }
+        
+        //Do DFS and compute SCC of the graph
+        for(int i=0;i<forestT.length;i++)
+        {
+            //Find starting point
+            if(!forestT[i].visited)
+                sccHelperSCC(forestT[i]);
+        }
     }
     
     private void sccHelperFinishTime(Node root)
@@ -447,17 +461,26 @@ public class GraphTools
             return;
         
         root.visited = true;
-        root.startTime = time;
+        root.startTime = time++;
         
         for(Node node : root.adjacencyList)
             sccHelperFinishTime(node);           
         
-        root.finishTime =  time;
+        root.finishTime =  time++;
     }
     
     private void sccHelperSCC(Node root)
     {
+        if(root.visited)
+            return;
         
+        root.visited = true;
+        System.out.print(root.name);
+        
+        for(Node node : root.adjacencyList)
+            sccHelperSCC(node);           
+        
+        System.out.println();
     }
     
     public static void resetNodes(ArrayList<Node> nodes)
