@@ -9,6 +9,7 @@ import java.util.Random;
 public class GraphTools 
 {
     private static ArrayList<String[]> order;
+    private static ArrayList<String> topOrder;
     public static final int RAND_EDGES = 0;
     public static final int MAX_EDGES = 1;
     
@@ -104,16 +105,17 @@ public class GraphTools
      * @param edgeSetting Generate random edges or maximum possible edges
      * @return GraphWrapper with all pertinent info and objects for the generated graph. Null if any parameters were invalid.
      */
-    public static GraphWrapper generateTopologicalGraph(int numNodes, int edgeSetting)
+    public static GraphWrapper generateTopologicalGraph(int numNodes)
     {
+        GraphWrapper wrapper = new GraphWrapper();
         Random rand = new Random();
         
         boolean[][] connected = new boolean[numNodes][numNodes];
-        TopologicalNode[] nodes = new TopologicalNode[numNodes];
+        Node[] nodes = new Node[numNodes];
          
         char label = 'A';
         for(int i=0;i<nodes.length;i++)
-            nodes[i] = new TopologicalNode((label++)+"");
+            nodes[i] = new Node((label++)+"");
         
         //Generates and random directed acyclic graph for topological sort example
         for(int i=0;i<connected.length;i++)
@@ -124,7 +126,7 @@ public class GraphTools
                     //Set the array repersentation to true
                     connected[i][j] = true;
                     //Create the connections amongst the nodes
-                    nodes[i].addNeighbor(nodes[j]);
+                    nodes[j].addNeighbor(nodes[i]);
                 }
             }
         
@@ -145,15 +147,17 @@ public class GraphTools
         for(int i=0;i<nodes.length;i++)
         {
             System.out.print(nodes[i].name+"|");
-            System.out.print(nodes[i].incomingNodes+"|");
-            for(int j=0;j<nodes[i].adjacencyList.size();j++)
-                System.out.print(nodes[i].adjacencyList.get(j).name + ",");
+            //System.out.print(nodes[i].incomingNodes+"|");
+            System.out.print(nodes[i].adjacencyList);
             
             System.out.println();
         }
         
-        //return wrapper;
-        return null;
+        wrapper.numNodes = numNodes;
+        wrapper.connections = connected;
+        wrapper.forest = nodes;
+        
+        return wrapper;
     }
     
     /**
@@ -173,65 +177,84 @@ public class GraphTools
         
         boolean[][] connected = new boolean[8][8];
         //Create connections amongst the nodes (can only connect to neighbors)
+        int threshold = 5;
         for(int i=0;i<nodes.length;i++)
         {
             switch(i)
             {
                 case 0:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[0][1] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[0][4] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[0][5] = true;
                     break;
                 case 1:
                 case 2:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[i][i-1] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[i][i+1] = true;
                     for(int j=0;j<3;j++)
-                        if(rand.nextInt(10)>3)
+                        if(rand.nextInt(10)>threshold)
                             connected[i][i+3+j] = true;
                     break;
                 case 3:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[3][2] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[3][6] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[3][7] = true;
                     break;
                 case 4:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[4][0] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[4][1] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[4][5] = true;
                     break;
                 case 5:
                 case 6:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[i][i-1] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[i][i+1] = true;
                     for(int j=0;j<3;j++)
-                        if(rand.nextInt(10)>3)
+                        if(rand.nextInt(10)>threshold)
                             connected[i][i-3-j] = true;
                     break;
                 case 7:
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[7][2] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[7][3] = true;
-                    if(rand.nextInt(10)>3)
+                    if(rand.nextInt(10)>threshold)
                         connected[7][6] = true;
                     break;
                 default:
                     break;
             }
+        }
+       
+        //Connect all the nodes based on the adjacency matrix
+        for(int i=0;i<connected.length;i++)
+        {
+            for(int j=0;j<connected.length;j++)
+            {
+                if(connected[i][j])
+                    nodes[i].addNeighbor(nodes[j]);
+            }
+        }
+        
+        //Print out the nodes and their neighbors (FOR DEBUGGING)
+        for(int i=0;i<nodes.length;i++)
+        {
+            System.out.print(nodes[i].name+"|");
+            System.out.print(nodes[i].adjacencyList);
+            System.out.println();
         }
         
         return null;
@@ -298,6 +321,41 @@ public class GraphTools
         for(Node node : root.adjacencyList)
             bfsHelper(node);
         
+    }
+    
+    /**
+     * Preforms the topological sort algorithm on a forest of nodes
+     * @param forest - Group of trees which will be preformed on
+     * @return Topological order of the nodes in String format
+     */
+    public static ArrayList<String> topologicalSort(Node[] forest)
+    {
+        //Needed for animation:
+        //Visit order
+        //Topological Order (List)
+        System.out.println("==========Topological Sort==========");
+        topOrder = new ArrayList<>();
+        for(int i=0;i<forest.length;i++)
+        {
+            //Find starting point
+            if(!forest[i].visited)
+                topologicalSortHelper(forest[i]);
+        }
+        
+        return topOrder;
+    }
+    
+    private static void topologicalSortHelper(Node root)
+    {
+        if(root.visited)
+            return;
+        
+        root.visited = true;
+        
+        for(Node node : root.adjacencyList)
+            topologicalSortHelper(node);
+        
+        topOrder.add(0, root.name);
     }
     
     public static void resetNodes(ArrayList<Node> nodes)
