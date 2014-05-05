@@ -496,7 +496,57 @@ public class GraphView extends javax.swing.JFrame
         GraphTools gt = new GraphTools();
         ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
         
+        //Preform DFS and 
+        if(order.size() == 0)
+            return;
+        
+        char curNodeID = order.get(0)[0].charAt(0);
+        char nextNodeID = order.get(0)[1].charAt(0);
+        
+        graph.getModel().beginUpdate();
+        try
+        {   
+            Object v1 = graph.insertVertex(parent, null, curNodeID, 
+                                            vertexLocations[curNodeID - 'A'][0], 
+                                            vertexLocations[curNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            Object v2 = graph.insertVertex(parent, null, nextNodeID, 
+                                            vertexLocations[nextNodeID - 'A'][0], 
+                                            vertexLocations[nextNodeID - 'A'][1], 
+                                            50, 50, "RED_ROUNDED");
+            
+            appendToLog(", "+nextNodeID);
+            
+            graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println("Graph Exception");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+        
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+                order.remove(0);
+                showAlgorithmOrder(order);
+            }
+        };
+        timer.schedule(tt, animationSpeed);
+        
         displayInverse();
+    }
+    
+    private void showSCCOrder(ArrayList<String[]> order)
+    {
+        
     }
     
     private void displayInverse()
@@ -505,14 +555,14 @@ public class GraphView extends javax.swing.JFrame
         {   
             //Clear the graph
             graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
-            
+            log("Preform DFS on inverse to find SCC.");
             Object[] verticies = new Object[8];            
             for(int i = 0; i<8;i++)
             {
                 verticies[i] = graph.insertVertex(parent, null, (char) ('A' + i), 
                                                 vertexLocations[i][0], 
                                                 vertexLocations[i][1], 
-                                                50, 50, "RED_ROUNDED");
+                                                50, 50, "ROUNDED");
             }
             
             //Add edges between nodes
