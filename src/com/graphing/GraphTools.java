@@ -246,6 +246,7 @@ public class GraphTools
             }
         }
        
+        int numEdges = 0;
         //Connect all the nodes based on the adjacency matrix
         //Also form the transpose
         for(int i=0;i<connected.length;i++)
@@ -258,6 +259,7 @@ public class GraphTools
                     //Transpose formation
                     transpose[j][i] = true;
                     nodesT[j].addNeighbor(nodesT[i]);
+                    numEdges++;
                 }
             }
         }
@@ -284,6 +286,9 @@ public class GraphTools
         wrapper.connectionsT = transpose;
         wrapper.forest = nodes;
         wrapper.forestT = nodesT;
+        wrapper.numNodes = 8;
+        wrapper.numEdges = numEdges;
+        
         return wrapper;
     }
     
@@ -397,7 +402,7 @@ public class GraphTools
     private int time;
     
     /**
-     * Computers the strongly connected components of a graph
+     * Computes the strongly connected components of a graph
      * @param forest Group of nodes that algorithm will act upon
      * @param forestT Transpose of the group of node. 
      */

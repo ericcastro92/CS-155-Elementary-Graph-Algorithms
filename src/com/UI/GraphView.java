@@ -70,6 +70,7 @@ public class GraphView extends javax.swing.JFrame
             case DFS: setTitle("Depth First Search"); break;
             case BFS: setTitle("Breadth First Search"); break;
             case TOPOLOGICAL: setTitle("Topological Sort"); break;
+            case SCC: setTitle("Strongly Connected Components"); break;
             default: setTitle("Error"); break;
         }
     }

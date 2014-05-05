@@ -43,11 +43,13 @@ public class MainView extends javax.swing.JFrame {
         dfsRadio.setMnemonic(GraphView.DFS);
         bfsRadio.setMnemonic(GraphView.BFS);
         topologicalRadio.setMnemonic(GraphView.TOPOLOGICAL);
+        sccRadio.setMnemonic(GraphView.SCC);
 
         algorithmSelection = new ButtonGroup();
         algorithmSelection.add(bfsRadio);
         algorithmSelection.add(dfsRadio);
         algorithmSelection.add(topologicalRadio);
+        algorithmSelection.add(sccRadio);
         dfsRadio.setSelected(true);
 
         // <editor-fold defaultstate="collapsed" desc="Change Listeners">
@@ -174,7 +176,7 @@ public class MainView extends javax.swing.JFrame {
         dfsInfoButton = new javax.swing.JButton();
         bfsInfoButton = new javax.swing.JButton();
         topologicalInfoButton = new javax.swing.JButton();
-        sccButton = new javax.swing.JRadioButton();
+        sccRadio = new javax.swing.JRadioButton();
         sccInfoButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         mainMenu = new javax.swing.JMenuBar();
@@ -248,7 +250,7 @@ public class MainView extends javax.swing.JFrame {
 
         topologicalInfoButton.setText("?");
 
-        sccButton.setText("Strongly Connected");
+        sccRadio.setText("Strongly Connected");
 
         sccInfoButton.setText("?");
 
@@ -299,7 +301,7 @@ public class MainView extends javax.swing.JFrame {
                                     .addComponent(bfsInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(sccButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(sccRadio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(topologicalRadio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,7 +359,7 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(topologicalInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sccButton)
+                    .addComponent(sccRadio)
                     .addComponent(sccInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
@@ -412,6 +414,10 @@ public class MainView extends javax.swing.JFrame {
             case GraphView.TOPOLOGICAL:
                 wrapper = GraphTools.generateTopologicalGraph(nodeSlider.getValue());
                 frame = new GraphView(wrapper, GraphView.TOPOLOGICAL);
+                break;
+            case GraphView.SCC:
+                wrapper = GraphTools.generateSCCGraph();
+                frame = new GraphView(wrapper, GraphView.SCC);
                 break;
             default:
                 break;
@@ -509,8 +515,8 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JLabel nodesLabel;
     private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JButton quizButton;
-    private javax.swing.JRadioButton sccButton;
     private javax.swing.JButton sccInfoButton;
+    private javax.swing.JRadioButton sccRadio;
     private javax.swing.JButton topologicalInfoButton;
     private javax.swing.JRadioButton topologicalRadio;
     // End of variables declaration//GEN-END:variables
