@@ -42,12 +42,8 @@ public class QuizFrame extends javax.swing.JFrame {
 
         //for (int qCounter = 0; qCounter < size; qCounter++) {
         displayNext();
-        //currQ = q.get(qCounter);
-        //qBox.setText(currQ.getQuestion());
-        //aButton.setText(currQ.getAnswer1());
-        //bButton.setText(currQ.getAnswer2());
-        //cButton.setText(currQ.getAnswer3());
-        //dButton.setText(currQ.getAnswer4());
+
+        setTitle("Elementary Graph Algorithms Quiz");
 
         aButton.addChangeListener((ChangeEvent e) -> {
             if (aButton.isSelected()) {
@@ -189,7 +185,7 @@ public class QuizFrame extends javax.swing.JFrame {
         } else if (buttonSelection == 0) {
 
         } else if (Submit.getText().equals("Quit")) {
-            
+            setVisible(false);
         } else {
             displayNext();
             buttonSelection = 0;
