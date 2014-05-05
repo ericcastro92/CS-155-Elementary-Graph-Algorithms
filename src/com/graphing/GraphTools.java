@@ -404,6 +404,7 @@ public class GraphTools
      * Computes the strongly connected components of a graph
      * @param forest Group of nodes that algorithm will act upon
      * @param forestT Transpose of the group of node. 
+     * @return order of actions to be used to display the animation
      */
     public ArrayList<String[]> stronglyConnectedComponenets(Node[] forest, Node[] forestT)
     {
