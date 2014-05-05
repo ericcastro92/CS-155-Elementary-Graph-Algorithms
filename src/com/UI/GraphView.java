@@ -15,6 +15,7 @@ import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
@@ -496,39 +497,20 @@ public class GraphView extends javax.swing.JFrame
         GraphTools gt = new GraphTools();
         ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
         
-        //Preform DFS and 
-        if(order.size() == 0)
-            return;
         
-        char curNodeID = order.get(0)[0].charAt(0);
-        char nextNodeID = order.get(0)[1].charAt(0);
         
         graph.getModel().beginUpdate();
         try
-        {   
-            Object v1 = graph.insertVertex(parent, null, curNodeID, 
-                                            vertexLocations[curNodeID - 'A'][0], 
-                                            vertexLocations[curNodeID - 'A'][1], 
-                                            50, 50, "RED_ROUNDED");
-            
-            Object v2 = graph.insertVertex(parent, null, nextNodeID, 
-                                            vertexLocations[nextNodeID - 'A'][0], 
-                                            vertexLocations[nextNodeID - 'A'][1], 
-                                            50, 50, "RED_ROUNDED");
-            
-            appendToLog(", "+nextNodeID);
-            
-            graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
-            
-        }
-        catch(Exception e)
         {
-            System.out.println("Graph Exception");
+            v1 = (mxCell) graph.insertVertex(parent, null, "A["+wrapper.forest[0].startTime+"/-]", vertexLocations[0][0], vertexLocations[0][1], 50, 50, "ORANGE_ROUNDED");
         }
         finally
         {
             graph.getModel().endUpdate();
         } 
+        
+        if(wrapper.numNodes == 1)
+            return;
         
         TimerTask tt = new TimerTask()
         {
@@ -536,17 +518,19 @@ public class GraphView extends javax.swing.JFrame
             public void run() 
             {
                 order.remove(0);
-                showAlgorithmOrder(order);
+                showTopologicalOrder(order);
             }
         };
-        timer.schedule(tt, animationSpeed);
+        timer.schedule(tt, animationSpeed);  
         
-        displayInverse();
+        
+        //displayInverse();
     }
     
     private void showSCCOrder(ArrayList<String[]> order)
     {
-        
+        //String v1Label = curNodeID + "[" + wrapper.forest[curNodeID - 'A'].startTime + "/-";
+        //String v2Label = curNodeID + "[" + wrapper.forest[nextNodeID - 'A'].startTime + "/-";
     }
     
     private void displayInverse()
