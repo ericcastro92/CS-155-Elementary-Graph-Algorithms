@@ -54,7 +54,11 @@ public class Main {
         
         //System.out.println(topOrder);
         System.out.println("===================");
-        GraphTools.generateSCCGraph();
+        GraphTools gt = new GraphTools();
+        GraphWrapper wrapper = GraphTools.generateSCCGraph();
+        System.out.println("=========Algorithm Start==========");
+        gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        
     }
     
 }

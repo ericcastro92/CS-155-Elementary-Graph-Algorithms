@@ -278,7 +278,12 @@ public class GraphTools
             System.out.println();
         }
         
-        return null;
+        GraphWrapper wrapper = new GraphWrapper();
+        wrapper.connections = connected;
+        wrapper.connectionsT = transpose;
+        wrapper.forest = nodes;
+        wrapper.forestT = nodesT;
+        return wrapper;
     }
     
     public static ArrayList<String[]> dfs(Node root)
@@ -351,9 +356,6 @@ public class GraphTools
      */
     public static ArrayList<String[]> topologicalSort(Node[] forest)
     {
-        //Needed for animation:
-        //Visit order
-        //Topological Order (List)
         System.out.println("==========Topological Sort==========");
         topOrder = new ArrayList<>();
         order = new ArrayList<>();
@@ -390,7 +392,70 @@ public class GraphTools
         topOrder.add(0, root.name);
     }
     
-    public static void stronglyConnectedComponenets(Node[] forest, Node[] forsestT)
+    private static ArrayList<String> scc;
+    private int time;
+    
+    public void stronglyConnectedComponenets(Node[] forest, Node[] forestT)
+    {
+        System.out.println("==========Strongly Connected Components==========");
+        scc = new ArrayList<>();
+        
+        time = 1;
+        
+        //Do DFS and compute finishing times of the forest
+        for(int i=0;i<forest.length;i++)
+        {
+            //Find starting point
+            if(!forest[i].visited)
+                sccHelperFinishTime(forest[i]);
+        }
+        
+        //Transfer start and finishing times over to transpose
+        for(int i = 0;i<forest.length;i++)
+        {
+            forestT[i].startTime = forest[i].startTime;
+            forestT[i].finishTime = forest[i].finishTime;
+        }
+        
+        //Order forest transpose by finish time
+        ArrayList<Node> sorted = new ArrayList<>(Arrays.asList(forestT));
+        sorted.sort((Node n1, Node n2) -> {
+            return n1.finishTime - n2.finishTime;
+        });
+        for(int i = 0;i<forestT.length;i++)
+            forestT[i] = sorted.get(i);
+        
+        //Print out forest info (DEBUG)
+        for(int i = 0;i<forest.length;i++)
+        {
+            System.out.print(forest[i].name+"|");
+            System.out.printf("S: %d|F: %d\n", forest[i].startTime, forest[i].finishTime);
+        }
+        
+        System.out.println("---------------------");
+        //Print out forestT info (DEBUG)
+        for(int i = 0;i<forestT.length;i++)
+        {
+            System.out.print(forestT[i].name+"|");
+            System.out.printf("S: %d|F: %d\n", forestT[i].startTime, forestT[i].finishTime);
+        }
+    }
+    
+    private void sccHelperFinishTime(Node root)
+    {
+        if(root.visited)
+            return;
+        
+        root.visited = true;
+        root.startTime = time;
+        
+        for(Node node : root.adjacencyList)
+            sccHelperFinishTime(node);           
+        
+        root.finishTime =  time;
+    }
+    
+    private void sccHelperSCC(Node root)
     {
         
     }
