@@ -106,10 +106,10 @@ public class QuizTools {
         
         temp = new Quiz();
         temp.setQuestion("How does the alogrithm for finding strongly conencted components work?");
-        temp.setAnswer1("A. It uses one depth-first searchs, one on G and one on G^T.");
-        temp.setAnswer2("B. It uses two depth-first searchs, one on G and one on G^T.");
-        temp.setAnswer3("C. It uses one breadth-first searchs, one on G and one on G^T.");
-        temp.setAnswer4("D. It uses two breadth-first searchs, one on G and one on G^T.");
+        temp.setAnswer1("A. It uses one depth-first sesarchs, one on G and one on G^T.");
+        temp.setAnswer2("B. It uses two depth-first sesarchs, one on G and one on G^T.");
+        temp.setAnswer3("C. It uses one breadth-first sesarchs, one on G and one on G^T.");
+        temp.setAnswer4("D. It uses two breadth-first sesarchs, one on G and one on G^T.");
         temp.setCorrect(2);
         quiz.add(temp);
     }
