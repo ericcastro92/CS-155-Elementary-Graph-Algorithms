@@ -37,6 +37,11 @@ public class GraphView extends javax.swing.JFrame
     private final GraphWrapper wrapper;
     private Object parent;
     
+    private final String[] edgeStyles = {
+        "RED_ROUNDED", "GREEN_ROUNDED", "BLUE_ROUNDED",
+        "ORANGE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED",
+        "PURPLE_ROUNDED", "WHITE_ROUNDED"
+    };
     private final int[][] vertexLocations;
     private int animationSpeed;
     private int maxX;
@@ -99,6 +104,8 @@ public class GraphView extends javax.swing.JFrame
     
     private void buildStyles()
     {
+        
+        
         mxStylesheet stylesheet = graph.getStylesheet();
         HashMap<String, Object> style = new HashMap<>();
         
@@ -113,12 +120,54 @@ public class GraphView extends javax.swing.JFrame
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
         stylesheet.putCellStyle("RED_ROUNDED", style);
         
+        //Green rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#00CC07");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("GREEN_ROUNDED", style);
+        
+        //Blue rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#0D4DFF");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("BLUE_ROUNDED", style);
+        
         //Orange rounded style
         style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
         style.put(mxConstants.STYLE_FILLCOLOR, "#F79D00");
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
         stylesheet.putCellStyle("ORANGE_ROUNDED", style);
+        
+        //Yellow rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#FFF700");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("YELLOW_ROUNDED", style);
+        
+        //Grey rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#C2C2C2");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("GREY_ROUNDED", style);
+        
+        //Purple rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#ED00E5");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("PURPLE_ROUNDED", style);
+        
+        //White rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#FFFFFF");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("WHITE_ROUNDED", style);
         
         //Overlay edge
         style = new HashMap<>();
@@ -444,6 +493,9 @@ public class GraphView extends javax.swing.JFrame
     
     private void showAlgorithmSCC()
     {
+        GraphTools gt = new GraphTools();
+        ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        
         displayInverse();
     }
     
