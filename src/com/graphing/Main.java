@@ -57,8 +57,16 @@ public class Main {
         GraphTools gt = new GraphTools();
         GraphWrapper wrapper = GraphTools.generateSCCGraph();
         System.out.println("=========Algorithm Start==========");
-        gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        for(int i=0;i<order.size();i++)
+            System.out.println(Arrays.toString(order.get(i)));
         
+        System.out.println("--------Start and Finish Times---------");
+        for(int i=0;i<wrapper.forest.length;i++)
+            System.out.printf("%s|%d|%d\n",wrapper.forest[i].name,
+                                           wrapper.forest[i].startTime,
+                                           wrapper.forest[i].finishTime);
+            
     }
     
 }

@@ -398,7 +398,6 @@ public class GraphTools
         topOrder.add(0, root.name);
     }
     
-    private static ArrayList<String> scc;
     private int time;
     
     /**
@@ -406,10 +405,10 @@ public class GraphTools
      * @param forest Group of nodes that algorithm will act upon
      * @param forestT Transpose of the group of node. 
      */
-    public void stronglyConnectedComponenets(Node[] forest, Node[] forestT)
+    public ArrayList<String[]> stronglyConnectedComponenets(Node[] forest, Node[] forestT)
     {
         System.out.println("==========Strongly Connected Components==========");
-        scc = new ArrayList<>();
+        order = new ArrayList<>();
         
         time = 1;
         
@@ -418,8 +417,10 @@ public class GraphTools
         {
             //Find starting point
             if(!forest[i].visited)
-                sccHelperFinishTime(forest[i]);
+                sccHelperFinishTime(null, forest[i]);
         }
+        
+        order.add(new String[]{"Transpose", ""});
         
         //Transfer start and finishing times over to transpose
         for(int i = 0;i<forest.length;i++)
@@ -458,20 +459,30 @@ public class GraphTools
             if(!forestT[i].visited)
                 sccHelperSCC(forestT[i]);
         }
+        
+        return order;
     }
     
-    private void sccHelperFinishTime(Node root)
+    private void sccHelperFinishTime(Node src, Node root)
     {
         if(root.visited)
             return;
         
         root.visited = true;
         root.startTime = time++;
+        if(src==null)
+            order.add(new String[]{"", root.name});
+        else
+            order.add(new String[]{src.name, root.name});
         
         for(Node node : root.adjacencyList)
-            sccHelperFinishTime(node);           
+        {
+            sccHelperFinishTime(src, node);       
+            order.add(new String[]{"BACK", root.name});
+        }
         
         root.finishTime =  time++;
+        order.add(new String[]{"DONE", root.name});
     }
     
     private void sccHelperSCC(Node root)
@@ -480,12 +491,12 @@ public class GraphTools
             return;
         
         root.visited = true;
-        System.out.print(root.name);
+        order.add(new String[]{"SCC", root.name});
         
         for(Node node : root.adjacencyList)
             sccHelperSCC(node);           
         
-        System.out.println();
+        order.add(new String[]{"SCC_END", ""});
     }
     
     public static void resetNodes(ArrayList<Node> nodes)
