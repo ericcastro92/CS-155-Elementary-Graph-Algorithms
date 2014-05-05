@@ -45,6 +45,8 @@ public class Main {
 
         //Node head = GraphTools.generateGraph(4, 6).head;
         //GraphTools.dfs(head);
+        
+        GraphTools.generateTopologicalGraph(10, 1);
     }
     
 }

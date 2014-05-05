@@ -108,55 +108,132 @@ public class GraphTools
     {
         Random rand = new Random();
         
-        int levels = rand.nextInt(numNodes - 2) + 2;
-        
-        ArrayList<ArrayList<TopologicalNode>> nodes = new ArrayList<>();
-        
-        boolean[][] connected = new boolean[numNodes][numNodes];//Keeps track of created edges
+        boolean[][] connected = new boolean[numNodes][numNodes];
+        TopologicalNode[] nodes = new TopologicalNode[numNodes];
+         
         char label = 'A';
-
-        for(int i=0;i<levels;i++)//Add arraylist for each level
-        {   
-            nodes.add(new ArrayList<>());
-            //Add default node to the level
-            nodes.get(i).add(new TopologicalNode(""+label++));
-            numNodes--;
+        for(int i=0;i<nodes.length;i++)
+            nodes[i] = new TopologicalNode((label++)+"");
+        
+        //Generates and random directed acyclic graph for topological sort example
+        for(int i=0;i<connected.length;i++)
+            for(int j=0;j<i;j++)
+            {
+                if(rand.nextInt(3) > 1)
+                {
+                    //Set the array repersentation to true
+                    connected[i][j] = true;
+                    //Create the connections amongst the nodes
+                    nodes[i].addNeighbor(nodes[j]);
+                }
+            }
+        
+        //Print out the adjacency matrixs (FOR DEBUGGING)
+        for(int i=0;i<connected.length;i++)
+        {
+            for(int j=0;j<connected.length;j++)
+            {
+                if(connected[i][j])
+                    System.out.print("T|");
+                else
+                    System.out.print("X|");
+            }
+            System.out.println();
         }
         
-        //Randomly add remaining nodes to the graph
-        while(numNodes-->0)
+        //Print out the nodes and their neighbors (FOR DEBUGGING)
+        for(int i=0;i<nodes.length;i++)
         {
-            int level = rand.nextInt(levels);
-            nodes.get(level).add(new TopologicalNode(""+label++));
+            System.out.print(nodes[i].name+"|");
+            System.out.print(nodes[i].incomingNodes+"|");
+            for(int j=0;j<nodes[i].adjacencyList.size();j++)
+                System.out.print(nodes[i].adjacencyList.get(j).name + ",");
+            
+            System.out.println();
         }
-
-        //TODO: Generate representation
-        switch(edgeSetting)
-        {
-            case RAND_EDGES:
-                for(int parentLevel = 0; parentLevel < levels - 1; parentLevel++)
-                {
-                    for(TopologicalNode parent : nodes.get(parentLevel))
-                    {
-                        for(TopologicalNode child : nodes.get(parentLevel + 1))
-                        {
-                            if(rand.nextInt(10) >= 3)//Randomly add edges
-                                parent.addNeighbor(child);
-                        }
-                    } 
-                }
-                break;
-            case MAX_EDGES:
-                for(int parentLevel = 0; parentLevel < levels - 1; parentLevel++)
-                {   
-                    for(TopologicalNode parent : nodes.get(parentLevel))
-                        for(TopologicalNode child : nodes.get(parentLevel + 1))
-                            parent.addNeighbor(child);
-                }
-                break;
-        }
-
+        
         //return wrapper;
+        return null;
+    }
+    
+    /**
+     * Generates a graph to be used with the Strongly Connected Components algorithm.
+     * This graph can be used for various exercises and visualizations. Always has 
+     * eight nodes and a random amount of SCCs.
+     * @return All necessary information needed to represent the graph visually
+     */
+    public static GraphWrapper generateSCCGraph()
+    {
+        Random rand = new Random();
+        Node[] nodes = new Node[8];
+        char label = 'A';
+        //initialize the nodes
+        for(int i=0;i<nodes.length;i++)
+            nodes[i] = new Node((label++)+"");
+        
+        boolean[][] connected = new boolean[8][8];
+        //Create connections amongst the nodes (can only connect to neighbors)
+        for(int i=0;i<nodes.length;i++)
+        {
+            switch(i)
+            {
+                case 0:
+                    if(rand.nextInt(10)>3)
+                        connected[0][1] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[0][4] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[0][5] = true;
+                    break;
+                case 1:
+                case 2:
+                    if(rand.nextInt(10)>3)
+                        connected[i][i-1] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[i][i+1] = true;
+                    for(int j=0;j<3;j++)
+                        if(rand.nextInt(10)>3)
+                            connected[i][i+3+j] = true;
+                    break;
+                case 3:
+                    if(rand.nextInt(10)>3)
+                        connected[3][2] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[3][6] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[3][7] = true;
+                    break;
+                case 4:
+                    if(rand.nextInt(10)>3)
+                        connected[4][0] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[4][1] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[4][5] = true;
+                    break;
+                case 5:
+                case 6:
+                    if(rand.nextInt(10)>3)
+                        connected[i][i-1] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[i][i+1] = true;
+                    for(int j=0;j<3;j++)
+                        if(rand.nextInt(10)>3)
+                            connected[i][i-3-j] = true;
+                    break;
+                case 7:
+                    if(rand.nextInt(10)>3)
+                        connected[7][2] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[7][3] = true;
+                    if(rand.nextInt(10)>3)
+                        connected[7][6] = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         return null;
     }
     
