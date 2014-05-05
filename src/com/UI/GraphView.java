@@ -30,6 +30,7 @@ public class GraphView extends javax.swing.JFrame
     public final static int DFS = 1;
     public final static int BFS = 2;
     public final static int TOPOLOGICAL = 3;
+    public final static int SCC = 4;
     
     private final Timer timer;
     private final mxGraph graph;
@@ -68,6 +69,7 @@ public class GraphView extends javax.swing.JFrame
         {
             case DFS: setTitle("Depth First Search"); break;
             case BFS: setTitle("Breadth First Search"); break;
+            case TOPOLOGICAL: setTitle("Topological Sort"); break;
             default: setTitle("Error"); break;
         }
     }
@@ -110,6 +112,13 @@ public class GraphView extends javax.swing.JFrame
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
         stylesheet.putCellStyle("RED_ROUNDED", style);
         
+        //Orange rounded style
+        style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
+        style.put(mxConstants.STYLE_FILLCOLOR, "#F79D00");
+        style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
+        stylesheet.putCellStyle("ORANGE_ROUNDED", style);
+        
         //Overlay edge
         style = new HashMap<>();
         style.put(mxConstants.STYLE_STROKECOLOR, "#000000");
@@ -118,10 +127,7 @@ public class GraphView extends javax.swing.JFrame
     }
 
     private void buildGraph()
-    {
-        int nodeSize = 50;
-        int chartSpacing = 25;
-                
+    { 
         int chartSize = wrapper.numNodes / 2;
         if(chartSize * chartSize < wrapper.numNodes)
             chartSize+=1;
@@ -262,7 +268,7 @@ public class GraphView extends javax.swing.JFrame
         
         graph.getModel().beginUpdate();
         try
-        {
+        {   
             Object v1 = graph.insertVertex(parent, null, curNodeID, 
                                             vertexLocations[curNodeID - 'A'][0], 
                                             vertexLocations[curNodeID - 'A'][1], 
@@ -297,6 +303,142 @@ public class GraphView extends javax.swing.JFrame
             }
         };
         timer.schedule(tt, animationSpeed);
+    }
+    
+    private void showAlgorithmTopological()
+    {
+        ArrayList<String[]> order = GraphTools.topologicalSort(wrapper.forest);
+        
+        graph.getModel().beginUpdate();
+        try
+        {
+            v1 = (mxCell) graph.insertVertex(parent, null, 'A', vertexLocations[0][0], vertexLocations[0][1], 50, 50, "ORANGE_ROUNDED");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+        
+        if(wrapper.numNodes == 1)
+            return;
+        
+        TimerTask tt = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+                order.remove(0);
+                showTopologicalOrder(order);
+            }
+        };
+        timer.schedule(tt, animationSpeed);  
+    }
+    
+    private void showTopologicalOrder(ArrayList<String[]> order)
+    {
+        if(order.size() == 0)
+            return;
+        
+        if(order.get(0)[0].equalsIgnoreCase("DONE"))
+        {
+            char nextNodeID = order.get(0)[1].charAt(0);
+            graph.getModel().beginUpdate();
+            try
+            {   
+                Object v1 = graph.insertVertex(parent, null, nextNodeID, 
+                                                vertexLocations[nextNodeID - 'A'][0], 
+                                                vertexLocations[nextNodeID - 'A'][1], 
+                                                50, 50, "RED_ROUNDED");
+            }
+            catch(Exception e)
+            {
+                System.out.println("Graph Exception");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+           
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showTopologicalOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
+        else if(order.get(0)[0].equalsIgnoreCase("BACK"))
+        {
+            order.remove(0);
+            showTopologicalOrder(order);
+        }
+        else if(order.get(0)[0].equalsIgnoreCase(""))
+        {
+            char nextNodeID = order.get(0)[1].charAt(0);
+            graph.getModel().beginUpdate();
+            try
+            {
+                v1 = (mxCell) graph.insertVertex(parent, null, nextNodeID, vertexLocations[nextNodeID - 'A'][0], vertexLocations[nextNodeID - 'A'][1], 50, 50, "ORANGE_ROUNDED");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+            
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showTopologicalOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
+        else
+        {
+            char curNodeID = order.get(0)[0].charAt(0);
+            char nextNodeID = order.get(0)[1].charAt(0);
+            graph.getModel().beginUpdate();
+            try
+            {   
+                Object v1 = graph.insertVertex(parent, null, curNodeID, 
+                                                vertexLocations[curNodeID - 'A'][0], 
+                                                vertexLocations[curNodeID - 'A'][1], 
+                                                50, 50, "ORANGE_ROUNDED");
+
+                Object v2 = graph.insertVertex(parent, null, nextNodeID, 
+                                                vertexLocations[nextNodeID - 'A'][0], 
+                                                vertexLocations[nextNodeID - 'A'][1], 
+                                                50, 50, "ORANGE_ROUNDED");
+
+                graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
+
+            }
+            catch(Exception e)
+            {
+                System.out.println("Graph Exception");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showTopologicalOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
     }
     
     private void appendToLog(String text)
@@ -406,6 +548,7 @@ public class GraphView extends javax.swing.JFrame
         {
             case DFS: showAlgorithmDFS(); break;
             case BFS: showAlgorithmBFS(); break;
+            case TOPOLOGICAL: showAlgorithmTopological(); break;
         }
         
     }//GEN-LAST:event_startButtonActionPerformed

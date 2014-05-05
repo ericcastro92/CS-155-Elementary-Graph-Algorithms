@@ -124,7 +124,7 @@ public class GraphTools
                 if(rand.nextInt(3) > 1)
                 {
                     //Set the array repersentation to true
-                    connected[i][j] = true;
+                    connected[j][i] = true;
                     //Create the connections amongst the nodes
                     nodes[j].addNeighbor(nodes[i]);
                 }
@@ -328,33 +328,44 @@ public class GraphTools
      * @param forest - Group of trees which will be preformed on
      * @return Topological order of the nodes in String format
      */
-    public static ArrayList<String> topologicalSort(Node[] forest)
+    public static ArrayList<String[]> topologicalSort(Node[] forest)
     {
         //Needed for animation:
         //Visit order
         //Topological Order (List)
         System.out.println("==========Topological Sort==========");
         topOrder = new ArrayList<>();
+        order = new ArrayList<>();
         for(int i=0;i<forest.length;i++)
         {
             //Find starting point
             if(!forest[i].visited)
-                topologicalSortHelper(forest[i]);
+                topologicalSortHelper(null, forest[i]);
         }
         
-        return topOrder;
+        System.out.println(topOrder);
+        return order;
     }
     
-    private static void topologicalSortHelper(Node root)
+    private static void topologicalSortHelper(Node src, Node root)
     {
         if(root.visited)
             return;
         
+        if(src==null)
+            order.add(new String[]{"", root.name});
+        else
+            order.add(new String[]{src.name, root.name});
+        
         root.visited = true;
         
         for(Node node : root.adjacencyList)
-            topologicalSortHelper(node);
+        {
+            topologicalSortHelper(root, node);           
+            order.add(new String[]{"BACK", root.name});
+        }            
         
+        order.add(new String[]{"DONE", root.name});
         topOrder.add(0, root.name);
     }
     

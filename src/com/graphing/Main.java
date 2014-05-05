@@ -1,6 +1,7 @@
 package com.graphing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -47,8 +48,11 @@ public class Main {
         //GraphTools.dfs(head);
         
         GraphWrapper gw = GraphTools.generateTopologicalGraph(5);
-        ArrayList<String> topOrder = GraphTools.topologicalSort(gw.forest);
-        System.out.println(topOrder);
+        ArrayList<String[]> order = GraphTools.topologicalSort(gw.forest);
+        for(int i=0;i<order.size();i++)
+            System.out.println(Arrays.toString(order.get(i)));
+        
+        //System.out.println(topOrder);
         System.out.println("===================");
         //GraphTools.generateSCCGraph();
     }

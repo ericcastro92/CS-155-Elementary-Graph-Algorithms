@@ -410,6 +410,8 @@ public class MainView extends javax.swing.JFrame {
                 frame = new GraphView(wrapper, GraphView.BFS);
                 break;
             case GraphView.TOPOLOGICAL:
+                wrapper = GraphTools.generateTopologicalGraph(nodeSlider.getValue());
+                frame = new GraphView(wrapper, GraphView.TOPOLOGICAL);
                 break;
             default:
                 break;
