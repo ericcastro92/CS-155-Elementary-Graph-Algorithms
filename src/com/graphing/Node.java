@@ -7,7 +7,11 @@ public class Node
 	public String name;
 	public ArrayList<Node> adjacencyList;
 	
-	public boolean visited;
+        public boolean visited;
+        
+        //For use with SCC
+        public int startTime;
+        public int finishTime;
 	
 	public Node(String name)
 	{

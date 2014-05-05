@@ -54,7 +54,7 @@ public class Main {
         
         //System.out.println(topOrder);
         System.out.println("===================");
-        //GraphTools.generateSCCGraph();
+        GraphTools.generateSCCGraph();
     }
     
 }

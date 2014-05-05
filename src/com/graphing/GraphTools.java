@@ -170,14 +170,20 @@ public class GraphTools
     {
         Random rand = new Random();
         Node[] nodes = new Node[8];
+        Node[] nodesT = new Node[8];//Node transpose
         char label = 'A';
         //initialize the nodes
         for(int i=0;i<nodes.length;i++)
+        {
             nodes[i] = new Node((label++)+"");
+            nodesT[i] = new Node((label++)+"");
+        }
         
         boolean[][] connected = new boolean[8][8];
+        boolean[][] transpose = new boolean[8][8];
+        
         //Create connections amongst the nodes (can only connect to neighbors)
-        int threshold = 5;
+        int threshold = 6;
         for(int i=0;i<nodes.length;i++)
         {
             switch(i)
@@ -240,12 +246,18 @@ public class GraphTools
         }
        
         //Connect all the nodes based on the adjacency matrix
+        //Also form the transpose
         for(int i=0;i<connected.length;i++)
         {
             for(int j=0;j<connected.length;j++)
             {
                 if(connected[i][j])
+                {
                     nodes[i].addNeighbor(nodes[j]);
+                    //Transpose formation
+                    transpose[j][i] = true;
+                    nodesT[j].addNeighbor(nodesT[i]);
+                }
             }
         }
         
@@ -254,6 +266,15 @@ public class GraphTools
         {
             System.out.print(nodes[i].name+"|");
             System.out.print(nodes[i].adjacencyList);
+            System.out.println();
+        }
+        
+        //Print out the transpose information (FOR DEBUGGING)
+        System.out.println("~~~~~~Transpose~~~~~~");
+        for(int i=0;i<nodesT.length;i++)
+        {
+            System.out.print(nodesT[i].name+"|");
+            System.out.print(nodesT[i].adjacencyList);
             System.out.println();
         }
         
@@ -367,6 +388,11 @@ public class GraphTools
         
         order.add(new String[]{"DONE", root.name});
         topOrder.add(0, root.name);
+    }
+    
+    public static void stronglyConnectedComponenets(Node[] forest, Node[] forsestT)
+    {
+        
     }
     
     public static void resetNodes(ArrayList<Node> nodes)
