@@ -442,6 +442,45 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    private void showAlgorithmSCC()
+    {
+        displayInverse();
+    }
+    
+    private void displayInverse()
+    {
+        try
+        {   
+            //Clear the graph
+            graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
+            
+            Object[] verticies = new Object[8];            
+            for(int i = 0; i<8;i++)
+            {
+                verticies[i] = graph.insertVertex(parent, null, (char) ('A' + i), 
+                                                vertexLocations[i][0], 
+                                                vertexLocations[i][1], 
+                                                50, 50, "RED_ROUNDED");
+            }
+            
+            //Add edges between nodes
+            for(int i=0;i<wrapper.numNodes;i++)
+                for(int j=0;j<wrapper.numNodes;j++)
+                {
+                    if(wrapper.connections[i][j] && i != j)
+                        graph.insertEdge(parent, null, null, verticies[j], verticies[i]);
+                }
+        }
+        catch(Exception e)
+        {
+            System.out.println("Graph Exception");
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        } 
+    }
+    
     private void appendToLog(String text)
     {
         String temp = logLabel.getText();
@@ -550,6 +589,7 @@ public class GraphView extends javax.swing.JFrame
             case DFS: showAlgorithmDFS(); break;
             case BFS: showAlgorithmBFS(); break;
             case TOPOLOGICAL: showAlgorithmTopological(); break;
+            case SCC: showAlgorithmSCC(); break;
         }
         
     }//GEN-LAST:event_startButtonActionPerformed
