@@ -46,7 +46,11 @@ public class Main {
         //Node head = GraphTools.generateGraph(4, 6).head;
         //GraphTools.dfs(head);
         
-        GraphTools.generateTopologicalGraph(10, 1);
+        GraphWrapper gw = GraphTools.generateTopologicalGraph(5);
+        ArrayList<String> topOrder = GraphTools.topologicalSort(gw.forest);
+        System.out.println(topOrder);
+        System.out.println("===================");
+        //GraphTools.generateSCCGraph();
     }
     
 }

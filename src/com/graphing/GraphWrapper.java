@@ -17,4 +17,5 @@ public class GraphWrapper
     public int numEdges;//Number of edges in the graph
     
     public boolean[][] connections;//Array representation of all edges
+    public Node[] forest;//Forest of trees, used for Topological and SCC
 }
