@@ -477,8 +477,11 @@ public class GraphTools
         
         for(Node node : root.adjacencyList)
         {
-            sccHelperFinishTime(src, node);       
-            order.add(new String[]{"BACK", root.name});
+            if(!node.visited)
+            {
+                sccHelperFinishTime(src, node);       
+                order.add(new String[]{"BACK", root.name});
+            }
         }
         
         root.finishTime =  time++;
