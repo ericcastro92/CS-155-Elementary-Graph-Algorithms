@@ -461,7 +461,6 @@ public class GraphTools
                 sccHelperSCC(null, forestT[i]);
         }
         
-
         return order;
     }
     
@@ -481,7 +480,7 @@ public class GraphTools
         {
             if(!node.visited)
             {
-                sccHelperFinishTime(src, node);       
+                sccHelperFinishTime(root, node);       
                 order.add(new String[]{"BACK", root.name});
             }
         }
@@ -502,7 +501,7 @@ public class GraphTools
             order.add(new String[]{src.name, root.name});
         
         for(Node node : root.adjacencyList)
-            sccHelperSCC(src, node);           
+            sccHelperSCC(root, node);           
         
         order.add(new String[]{"SCC_END", ""});
     }

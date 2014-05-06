@@ -38,7 +38,7 @@ public class GraphView extends javax.swing.JFrame
     private final GraphWrapper wrapper;
     private Object parent;
     
-    private final String[] edgeStyles = {
+    private final String[] vertexStyles = {
         "RED_ROUNDED", "GREEN_ROUNDED", "BLUE_ROUNDED",
         "ORANGE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED",
         "PURPLE_ROUNDED", "WHITE_ROUNDED"
@@ -105,8 +105,6 @@ public class GraphView extends javax.swing.JFrame
     
     private void buildStyles()
     {
-        
-        
         mxStylesheet stylesheet = graph.getStylesheet();
         HashMap<String, Object> style = new HashMap<>();
         
@@ -503,7 +501,9 @@ public class GraphView extends javax.swing.JFrame
         graph.getModel().beginUpdate();
         try
         {
-            v1 = (mxCell) graph.insertVertex(parent, null, "A["+wrapper.forest[0].startTime+"/-]", vertexLocations[0][0], vertexLocations[0][1], 50, 50, "RED_ROUNDED");
+            v1 = (mxCell) graph.insertVertex(parent, null, "A["+wrapper.forest[0].startTime+"/-]", 
+                                                            vertexLocations[0][0], vertexLocations[0][1], 
+                                                            50, 50, "RED_ROUNDED");
         }
         finally
         {
@@ -542,7 +542,7 @@ public class GraphView extends javax.swing.JFrame
                 @Override
                 public void run() 
                 {
-                    displayInverse();
+                    displayInverse(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
@@ -618,8 +618,8 @@ public class GraphView extends javax.swing.JFrame
         {
             char curNodeID = order.get(0)[0].charAt(0);
             char nextNodeID = order.get(0)[1].charAt(0);
-            String v1Label = curNodeID + "[" + wrapper.forest[curNodeID - 'A'].startTime + "/-";
-            String v2Label = nextNodeID + "[" + wrapper.forest[nextNodeID - 'A'].startTime + "/-";
+            String v1Label = curNodeID + "[" + wrapper.forest[curNodeID - 'A'].startTime + "/-]";
+            String v2Label = nextNodeID + "[" + wrapper.forest[nextNodeID - 'A'].startTime + "/-]";
             graph.getModel().beginUpdate();
             try
             {   
@@ -658,7 +658,7 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
-    private void displayInverse()
+    private void displayInverse(ArrayList<String[]> order)
     {
         try
         {   
@@ -689,6 +689,8 @@ public class GraphView extends javax.swing.JFrame
         {
             graph.getModel().endUpdate();
         } 
+        
+        showSCCOrder(order);
     }
     
     private void showSCCOrder(ArrayList<String[]> order)
@@ -700,58 +702,20 @@ public class GraphView extends javax.swing.JFrame
         
         if(order.get(0)[0].equalsIgnoreCase("SCC_END"))
         {
+            styleCount++;
             order.remove(0);
             showSCCOrder(order);
-        }        
-        else if(order.get(0)[0].equalsIgnoreCase("DONE"))
+        }
+        else if(order.get(0)[0].isEmpty())
         {
             char nextNodeID = order.get(0)[1].charAt(0);
-            graph.getModel().beginUpdate();
             try
-            {  
-                Node node = wrapper.forest[nextNodeID - 'A'];
-                String label = nextNodeID + "[" + node.startTime + "/" + node.finishTime + "]";
-                Object v1 = graph.insertVertex(parent, null, label, 
+            {
+                System.out.printf("Empty: %c\n", nextNodeID);
+                v1 = (mxCell) graph.insertVertex(parent, null, nextNodeID, 
                                                 vertexLocations[nextNodeID - 'A'][0], 
                                                 vertexLocations[nextNodeID - 'A'][1], 
-                                                50, 50, "RED_ROUNDED");
-            }
-            catch(Exception e)
-            {
-                System.out.println("Graph Exception");
-            }
-            finally
-            {
-                graph.getModel().endUpdate();
-            } 
-           
-            TimerTask tt = new TimerTask()
-            {
-                @Override
-                public void run() 
-                {
-                    order.remove(0);
-                    showFinishTimeOrder(order);
-                }
-            };
-            timer.schedule(tt, animationSpeed);
-        }
-        else if(order.get(0)[0].equalsIgnoreCase("BACK"))
-        {
-            order.remove(0);
-            showFinishTimeOrder(order);
-        }
-        else if(order.get(0)[0].equalsIgnoreCase(""))
-        {
-            char nextNodeID = order.get(0)[1].charAt(0);
-            graph.getModel().beginUpdate();
-            try
-            {
-                Node node = wrapper.forest[nextNodeID - 'A'];
-                String label = nextNodeID + "[" + node.startTime + "/-]";
-                v1 = (mxCell) graph.insertVertex(parent, null, label, vertexLocations[nextNodeID - 'A'][0], 
-                                                                      vertexLocations[nextNodeID - 'A'][1], 
-                                                                      50, 50, "RED_ROUNDED");
+                                                50, 50, vertexStyles[styleCount]);
             }
             finally
             {
@@ -764,7 +728,7 @@ public class GraphView extends javax.swing.JFrame
                 public void run() 
                 {
                     order.remove(0);
-                    showFinishTimeOrder(order);
+                    showSCCOrder(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
@@ -773,20 +737,19 @@ public class GraphView extends javax.swing.JFrame
         {
             char curNodeID = order.get(0)[0].charAt(0);
             char nextNodeID = order.get(0)[1].charAt(0);
-            String v1Label = curNodeID + "[" + wrapper.forest[curNodeID - 'A'].startTime + "/-";
-            String v2Label = nextNodeID + "[" + wrapper.forest[nextNodeID - 'A'].startTime + "/-";
+                       
             graph.getModel().beginUpdate();
             try
             {   
-                Object v1 = graph.insertVertex(parent, null, v1Label, 
+                Object v1 = graph.insertVertex(parent, null, curNodeID, 
                                                 vertexLocations[curNodeID - 'A'][0], 
                                                 vertexLocations[curNodeID - 'A'][1], 
-                                                50, 50, "RED_ROUNDED");
+                                                50, 50, vertexStyles[styleCount]);
 
-                Object v2 = graph.insertVertex(parent, null, v2Label, 
+                Object v2 = graph.insertVertex(parent, null, nextNodeID, 
                                                 vertexLocations[nextNodeID - 'A'][0], 
                                                 vertexLocations[nextNodeID - 'A'][1], 
-                                                50, 50, "RED_ROUNDED");
+                                                50, 50, vertexStyles[styleCount]);
 
                 graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
 
@@ -806,7 +769,7 @@ public class GraphView extends javax.swing.JFrame
                 public void run() 
                 {
                     order.remove(0);
-                    showFinishTimeOrder(order);
+                    showSCCOrder(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
