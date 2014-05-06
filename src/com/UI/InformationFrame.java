@@ -43,8 +43,17 @@ public class InformationFrame extends javax.swing.JFrame {
      */
     private void displayDFSInfo()
     {
-        String info = "Depth First Search\n\n"
-                + "Information";
+        String info = "Depth First Search\n\n" +
+                "Depth first search visits each node in the graph by constantly \'going down\' a level until it cannot go any farther.\n" +
+                "Once it is at the \'bottom\' it will traverse back up the graph until it can find another way back down. In other words\n" +
+                "it will visit the neighbors of a node one at a time, and then visit that nodes neighbores one at a time, and so on.\n\n"
+                + "Time Complexity: O(E)\n"
+                + "Space Complexity: O(V)\n\n" + 
+                "1  procedure DFS(G,v):\n" +
+                "2      label v as discovered\n" +
+                "3      for all edges from v to w in G.adjacentEdges(v) do\n" +
+                "4          if vertex w is not labeled as discovered then\n" +
+                "5              recursively call DFS(G,w)";
         informationArea.setText(info);
     }
     
@@ -53,8 +62,32 @@ public class InformationFrame extends javax.swing.JFrame {
      */
     private void displayBFSInfo()
     {
-        String info = "Breadth First Search\n\n"
-                + "Information";
+        String info = "Breadth First Search\n\n"+
+                "Breadth first search iterates through a graph by visiting each neighbore node first before it proceeds to the next level.\n"
+                + "Only once every neighbor has been visited may the algorithm start visiting the \'neighbors neighbors'.\n\n" + 
+                "Time Complexity: O(V^2)\n" +
+                "Space Complexity: O(V)\n\n" +
+                "Psuedo Code:\n" +
+                "1  procedure BFS(G,v) is\n" +
+                "2      create a queue Q\n" +
+                "3      create a vector set V\n" +
+                "4      enqueue v onto Q\n" +
+                "5      add v to V\n" +
+                "6      while Q is not empty loop\n" +
+                "7         t ← Q.dequeue()\n" +
+                "8         if t is what we are looking for then\n" +
+                "9            return t\n" +
+                "10        end if\n" +
+                "11        for all edges e in G.adjacentEdges(t) loop\n" +
+                "12           u ← G.adjacentVertex(t,e)\n" +
+                "13           if u is not in V then\n" +
+                "14               add u to V\n" +
+                "15               enqueue u onto Q\n" +
+                "16           end if\n" +
+                "17        end loop\n" +
+                "18     end loop\n" +
+                "19     return none\n" +
+                "20 end BFS";
         informationArea.setText(info);        
     }
     
@@ -63,8 +96,11 @@ public class InformationFrame extends javax.swing.JFrame {
      */
     private void displayTopologicalInfo()
     {
-        String info = "Topological Sort\n\n"
-                + "Information";
+        String info = "Topological Sort\n\n" +
+                "Psuedo Code:\n" + 
+                "1 call DFS.G/ to compute finishing times 􏰁:f for each vertex 􏰁\n" +
+                "2 as each vertex is finished, insert it onto the front of a linked list\n" +
+                "3 return the linked list of vertices";
         informationArea.setText(info);
     }
     
@@ -73,8 +109,14 @@ public class InformationFrame extends javax.swing.JFrame {
      */
     private void displaySCCInfo()
     {
-        String info = "Strongly Connected Components\n\n"
-                + "Information";
+        String info = "Strongly Connected Components\n\n" +
+                "Psuedo Code:\n" +
+                "1 call DFS(G) to compute finishing times u.f for each vertex u" +
+                "2 compute G^T\n" +
+                "3 call DFS(G^T), but in the main loop of DFS, consider the vertices\n" +
+                "  in order of decreasing u.f (as computed in line 1)\n" +
+                "4 output the vertices of each tree in the depth-first forest formed in line 3 as a\n" +
+                "separate strongly connected component";
         informationArea.setText(info);
     }
     
