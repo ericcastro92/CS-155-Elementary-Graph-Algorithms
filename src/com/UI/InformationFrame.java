@@ -40,25 +40,29 @@ public class InformationFrame extends javax.swing.JFrame {
 
     private void displayDFSInfo()
     {
-        String info = "<html><b>Depth First Search</b></html>";
+        String info = "Depth First Search\n\n"
+                + "Information";
         informationArea.setText(info);
     }
     
     private void displayBFSInfo()
     {
-        String info = "<html><b>Breadth First Search</b></html>";
+        String info = "Breadth First Search\n\n"
+                + "Information";
         informationArea.setText(info);        
     }
     
     private void displayTopologicalInfo()
     {
-        String info = "<html><b>Topological Sort</b></html>";
+        String info = "Topological Sort\n\n"
+                + "Information";
         informationArea.setText(info);
     }
     
     private void displaySCCInfo()
     {
-        String info = "<html><b>Strongly Connected Components</b></html>";
+        String info = "Strongly Connected Components\n\n"
+                + "Information";
         informationArea.setText(info);
     }
     

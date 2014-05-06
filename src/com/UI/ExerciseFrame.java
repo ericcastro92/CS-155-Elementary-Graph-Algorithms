@@ -42,6 +42,7 @@ public class ExerciseFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         BFSButton.setText("Bread-First Search");
         BFSButton.addActionListener(new java.awt.event.ActionListener() {
