@@ -8,11 +8,12 @@ package com.graphing;
 import java.util.ArrayList;
 
 /**
- *
+ * Stores exercise questions
  * @author Augusta Storme
  */
 public class Exercises {
 
+    //Exercise strings
     public String BFSx = "";
     public String DFSx = "";
     public String TSx = "";

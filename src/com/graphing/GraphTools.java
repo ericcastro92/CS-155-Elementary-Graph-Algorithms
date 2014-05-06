@@ -6,10 +6,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/**
+ * Mostly static methods, this class can be used to generate graphs or preform
+ * graphing algorithms on provided graphs
+ * @author ericcastro
+ */
 public class GraphTools 
 {
-    private static ArrayList<String[]> order;
-    private static ArrayList<String> topOrder;
+    private static ArrayList<String[]> order;//Contains information needed for animation
+    private static ArrayList<String> topOrder;//Topological Sort order
     
     /**
      * Generates a graph given the number of nodes and edges
@@ -290,6 +295,11 @@ public class GraphTools
         return wrapper;
     }
     
+    /**
+     * Preforms DFS algorithm on the given graph
+     * @param root head of the tree
+     * @return information needed for animation
+     */
     public static ArrayList<String[]> dfs(Node root)
     {
         System.out.println("==========DFS==========");
@@ -301,6 +311,11 @@ public class GraphTools
         return order;
     }
 
+    /**
+     * Helper for DFS
+     * @param src source node
+     * @param root root node
+     */
     private static void dfsHelper(Node src, Node root)
     {
         if(root.visited)
@@ -318,6 +333,11 @@ public class GraphTools
             dfsHelper(root, node);
     }
 
+    /**
+     * Preforms DFS algorithm on the given graph
+     * @param root head of the tree
+     * @return information needed for animation
+     */
     public static ArrayList<String[]> bfs(Node root)
     {
         System.out.println("==========DFS==========");
@@ -335,6 +355,10 @@ public class GraphTools
         return order;
     }
     
+    /**
+     * Helper for BFS
+     * @param root root node
+     */
     private static void bfsHelper(Node root)
     {
         for(Node node : root.adjacencyList)
@@ -374,6 +398,11 @@ public class GraphTools
         return order;
     }
     
+    /**
+     * Helper for Topological sort algorithm
+     * @param src Source node
+     * @param root Root node
+     */
     private static void topologicalSortHelper(Node src, Node root)
     {
         if(root.visited)
@@ -396,6 +425,7 @@ public class GraphTools
         topOrder.add(0, root.name);
     }
     
+    //Used to keep track of start/finish times
     private int time;
     
     /**
@@ -463,6 +493,11 @@ public class GraphTools
         return order;
     }
     
+    /**
+     * Helper for SCC algorithm to compute finish times
+     * @param src Source node
+     * @param root Root node
+     */
     private void sccHelperFinishTime(Node src, Node root)
     {
         if(root.visited)
@@ -488,6 +523,11 @@ public class GraphTools
         order.add(new String[]{"DONE", root.name});
     }
     
+    /**
+     * Helper for SCC algorithm to preform DFS on the transpose and thus compute
+     * the SCC
+     * @param root - Root node 
+     */
     private void sccHelperSCC(Node root)
     {
         if(root.visited)
@@ -502,12 +542,20 @@ public class GraphTools
         order.add(new String[]{"SCC_END", ""});
     }
     
+    /**
+     * Resets all the given nodes to unvisited
+     * @param nodes Nodes to be reset
+     */
     public static void resetNodes(ArrayList<Node> nodes)
     {
         for(Node node : nodes)
             node.visited = false;
     }
-                 
+           
+    /**
+     * Sorts the neighbors of a node alphabetically
+     * @param nodes adjacency list
+     */
     private static void sortNeighbors(Node[] nodes)
     {
         for(int i=0;i<nodes.length;i++)
