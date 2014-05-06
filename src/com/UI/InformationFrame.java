@@ -47,8 +47,8 @@ public class InformationFrame extends javax.swing.JFrame {
                 "Depth first search visits each node in the graph by constantly \'going down\' a level until it cannot go any farther.\n" +
                 "Once it is at the \'bottom\' it will traverse back up the graph until it can find another way back down. In other words\n" +
                 "it will visit the neighbors of a node one at a time, and then visit that nodes neighbores one at a time, and so on.\n\n"
-                + "Time Complexity: O(E)\n"
-                + "Space Complexity: O(V)\n\n" + 
+                + "Time Complexity: O(|E|)\n"
+                + "Space Complexity: O(|V|)\n\n" + 
                 "1  procedure DFS(G,v):\n" +
                 "2      label v as discovered\n" +
                 "3      for all edges from v to w in G.adjacentEdges(v) do\n" +
@@ -65,8 +65,8 @@ public class InformationFrame extends javax.swing.JFrame {
         String info = "Breadth First Search\n\n"+
                 "Breadth first search iterates through a graph by visiting each neighbore node first before it proceeds to the next level.\n"
                 + "Only once every neighbor has been visited may the algorithm start visiting the \'neighbors neighbors'.\n\n" + 
-                "Time Complexity: O(V^2)\n" +
-                "Space Complexity: O(V)\n\n" +
+                "Time Complexity: O(|E|)\n" +
+                "Space Complexity: O(|V|)\n\n" +
                 "Psuedo Code:\n" +
                 "1  procedure BFS(G,v) is\n" +
                 "2      create a queue Q\n" +
@@ -96,7 +96,10 @@ public class InformationFrame extends javax.swing.JFrame {
      */
     private void displayTopologicalInfo()
     {
-        String info = "Topological Sort\n\n" +
+        String info = "Topological Sort\n\n" + 
+                "\"A topological sort of a directed graph is a linear ordering of its vertices such that for every directed edge uv from\n" +
+                " vertex u to vertex v, u comes before v in the ordering.\"-Wikipedia\n\n" +
+                "Time Complexity: O(|V|+|E|)\n\n" + 
                 "Psuedo Code:\n" + 
                 "1 call DFS.G/ to compute finishing times 􏰁:f for each vertex 􏰁\n" +
                 "2 as each vertex is finished, insert it onto the front of a linked list\n" +
@@ -110,6 +113,9 @@ public class InformationFrame extends javax.swing.JFrame {
     private void displaySCCInfo()
     {
         String info = "Strongly Connected Components\n\n" +
+                "Two nodes are strongly connected if there is a path from u to v and from v to u. This algorithm will find all the strongly\n" + 
+                "connected components in a given graph\n"+
+                "Time Complexity: O(|V|+|E|)\n\n" +
                 "Psuedo Code:\n" +
                 "1 call DFS(G) to compute finishing times u.f for each vertex u" +
                 "2 compute G^T\n" +
