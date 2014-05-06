@@ -6,7 +6,7 @@
 package com.graphing;
 
 /**
- *
+ * Basic quiz class to encapsulate necessary information
  * @author Jonathan Yee
  */
 public class Quiz {

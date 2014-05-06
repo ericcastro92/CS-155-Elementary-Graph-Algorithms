@@ -3,7 +3,7 @@ package com.graphing;
 import java.util.ArrayList;
 
 /**
- *
+ * Generates quizzes
  * @author Jonathan Yee
  */
 public class QuizTools {
@@ -15,6 +15,9 @@ public class QuizTools {
         quizMaker();
     }
 
+    /**
+     * Generate the actual quiz.
+     */
     public void quizMaker() {
         Quiz temp = new Quiz();
         temp.setQuestion("How can a graph G = (V,E) be represented by?");
