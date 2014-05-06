@@ -458,7 +458,7 @@ public class GraphTools
         {
             //Find starting point
             if(!forestT[i].visited)
-                sccHelperSCC(forestT[i]);
+                sccHelperSCC(null, forestT[i]);
         }
         
 
@@ -490,16 +490,19 @@ public class GraphTools
         order.add(new String[]{"DONE", root.name});
     }
     
-    private void sccHelperSCC(Node root)
+    private void sccHelperSCC(Node src, Node root)
     {
         if(root.visited)
             return;
         
         root.visited = true;
-        order.add(new String[]{"SCC", root.name});
+        if(src==null)
+            order.add(new String[]{"", root.name});
+        else
+            order.add(new String[]{src.name, root.name});
         
         for(Node node : root.adjacencyList)
-            sccHelperSCC(node);           
+            sccHelperSCC(src, node);           
         
         order.add(new String[]{"SCC_END", ""});
     }

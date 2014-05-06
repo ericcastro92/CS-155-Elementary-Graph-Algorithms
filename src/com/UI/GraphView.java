@@ -492,8 +492,11 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    private int styleCount;
+    
     private void showAlgorithmSCC()
     {
+        styleCount = 0;
         GraphTools gt = new GraphTools();
         ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
         
@@ -591,7 +594,9 @@ public class GraphView extends javax.swing.JFrame
             {
                 Node node = wrapper.forest[nextNodeID - 'A'];
                 String label = nextNodeID + "[" + node.startTime + "/-]";
-                v1 = (mxCell) graph.insertVertex(parent, null, label, vertexLocations[nextNodeID - 'A'][0], vertexLocations[nextNodeID - 'A'][1], 50, 50, "RED_ROUNDED");
+                v1 = (mxCell) graph.insertVertex(parent, null, label, vertexLocations[nextNodeID - 'A'][0], 
+                                                                      vertexLocations[nextNodeID - 'A'][1], 
+                                                                      50, 50, "RED_ROUNDED");
             }
             finally
             {
@@ -688,7 +693,124 @@ public class GraphView extends javax.swing.JFrame
     
     private void showSCCOrder(ArrayList<String[]> order)
     {
+        if(order.isEmpty())
+            return;        
+                
+        System.out.println("Instruction: " + Arrays.toString(order.get(0)));
         
+        if(order.get(0)[0].equalsIgnoreCase("SCC_END"))
+        {
+            order.remove(0);
+            showSCCOrder(order);
+        }        
+        else if(order.get(0)[0].equalsIgnoreCase("DONE"))
+        {
+            char nextNodeID = order.get(0)[1].charAt(0);
+            graph.getModel().beginUpdate();
+            try
+            {  
+                Node node = wrapper.forest[nextNodeID - 'A'];
+                String label = nextNodeID + "[" + node.startTime + "/" + node.finishTime + "]";
+                Object v1 = graph.insertVertex(parent, null, label, 
+                                                vertexLocations[nextNodeID - 'A'][0], 
+                                                vertexLocations[nextNodeID - 'A'][1], 
+                                                50, 50, "RED_ROUNDED");
+            }
+            catch(Exception e)
+            {
+                System.out.println("Graph Exception");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+           
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showFinishTimeOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
+        else if(order.get(0)[0].equalsIgnoreCase("BACK"))
+        {
+            order.remove(0);
+            showFinishTimeOrder(order);
+        }
+        else if(order.get(0)[0].equalsIgnoreCase(""))
+        {
+            char nextNodeID = order.get(0)[1].charAt(0);
+            graph.getModel().beginUpdate();
+            try
+            {
+                Node node = wrapper.forest[nextNodeID - 'A'];
+                String label = nextNodeID + "[" + node.startTime + "/-]";
+                v1 = (mxCell) graph.insertVertex(parent, null, label, vertexLocations[nextNodeID - 'A'][0], 
+                                                                      vertexLocations[nextNodeID - 'A'][1], 
+                                                                      50, 50, "RED_ROUNDED");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+            
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showFinishTimeOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
+        else
+        {
+            char curNodeID = order.get(0)[0].charAt(0);
+            char nextNodeID = order.get(0)[1].charAt(0);
+            String v1Label = curNodeID + "[" + wrapper.forest[curNodeID - 'A'].startTime + "/-";
+            String v2Label = nextNodeID + "[" + wrapper.forest[nextNodeID - 'A'].startTime + "/-";
+            graph.getModel().beginUpdate();
+            try
+            {   
+                Object v1 = graph.insertVertex(parent, null, v1Label, 
+                                                vertexLocations[curNodeID - 'A'][0], 
+                                                vertexLocations[curNodeID - 'A'][1], 
+                                                50, 50, "RED_ROUNDED");
+
+                Object v2 = graph.insertVertex(parent, null, v2Label, 
+                                                vertexLocations[nextNodeID - 'A'][0], 
+                                                vertexLocations[nextNodeID - 'A'][1], 
+                                                50, 50, "RED_ROUNDED");
+
+                graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
+
+            }
+            catch(Exception e)
+            {
+                System.out.println("Graph Exception");
+            }
+            finally
+            {
+                graph.getModel().endUpdate();
+            } 
+
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    order.remove(0);
+                    showFinishTimeOrder(order);
+                }
+            };
+            timer.schedule(tt, animationSpeed);
+        }
     }
     
     private void appendToLog(String text)
