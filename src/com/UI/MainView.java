@@ -236,7 +236,7 @@ public class MainView extends javax.swing.JFrame {
             }
         });
 
-        bfsRadio.setText("Breadth FirstSearch");
+        bfsRadio.setText("Breadth First Search");
 
         topologicalRadio.setText("Topological Sort");
 
@@ -262,12 +262,27 @@ public class MainView extends javax.swing.JFrame {
         });
 
         bfsInfoButton.setText("?");
+        bfsInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfsInfoButtonActionPerformed(evt);
+            }
+        });
 
         topologicalInfoButton.setText("?");
+        topologicalInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topologicalInfoButtonActionPerformed(evt);
+            }
+        });
 
         sccRadio.setText("Strongly Connected");
 
         sccInfoButton.setText("?");
+        sccInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sccInfoButtonActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Components");
 
@@ -456,7 +471,8 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_displayButtonActionPerformed
 
     private void dfsInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsInfoButtonActionPerformed
-        // TODO add your handling code here:
+        Frame frame = new InformationFrame(GraphView.DFS);
+        displayFrame(frame);
     }//GEN-LAST:event_dfsInfoButtonActionPerformed
 
     private void dfsRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dfsRadioActionPerformed
@@ -475,6 +491,21 @@ public class MainView extends javax.swing.JFrame {
         ExerciseFrame frame = new ExerciseFrame();
         displayFrame(frame);
     }//GEN-LAST:event_exerciseButtonActionPerformed
+
+    private void bfsInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfsInfoButtonActionPerformed
+        Frame frame = new InformationFrame(GraphView.BFS);
+        displayFrame(frame);
+    }//GEN-LAST:event_bfsInfoButtonActionPerformed
+
+    private void topologicalInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topologicalInfoButtonActionPerformed
+        Frame frame = new InformationFrame(GraphView.TOPOLOGICAL);
+        displayFrame(frame);
+    }//GEN-LAST:event_topologicalInfoButtonActionPerformed
+
+    private void sccInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sccInfoButtonActionPerformed
+        Frame frame = new InformationFrame(GraphView.SCC);
+        displayFrame(frame);
+    }//GEN-LAST:event_sccInfoButtonActionPerformed
 
     private void displayFrame(Frame frame) {
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
