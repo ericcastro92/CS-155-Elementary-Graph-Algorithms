@@ -76,10 +76,8 @@ public class GraphView extends javax.swing.JFrame
         {
             case DFS: setTitle("Depth First Search"); break;
             case BFS: setTitle("Breadth First Search"); break;
-            case TOPOLOGICAL: setTitle("Topological Sort"); break;
-            case SCC: setTitle("Strongly Connected Components");
-                    log("");
-                    break;
+            case TOPOLOGICAL: setTitle("Topological Sort"); log(""); break;
+            case SCC: setTitle("Strongly Connected Components"); log(""); break;
             default: setTitle("Error"); break;
         }
     }
@@ -394,6 +392,12 @@ public class GraphView extends javax.swing.JFrame
         if(order.get(0)[0].equalsIgnoreCase("DONE"))
         {
             char nextNodeID = order.get(0)[1].charAt(0);
+            if(logLabel.getText().isEmpty())
+                logLabel.setText(nextNodeID+"");
+            else
+            {
+                logLabel.setText(nextNodeID + " --> " + logLabel.getText());
+            }
             graph.getModel().beginUpdate();
             try
             {   
@@ -722,7 +726,6 @@ public class GraphView extends javax.swing.JFrame
         else if(order.get(0)[0].isEmpty())
         {
             char nextNodeID = order.get(0)[1].charAt(0);
-            //System.out.printf("%c: %s\n", nextNodeID, vertexStyles[styleCount]);
             graph.getModel().beginUpdate();
             try
             {
