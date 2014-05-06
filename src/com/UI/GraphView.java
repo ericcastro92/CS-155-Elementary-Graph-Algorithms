@@ -38,10 +38,12 @@ public class GraphView extends javax.swing.JFrame
     private final GraphWrapper wrapper;
     private Object parent;
     
-    private final String[] vertexStyles = {
+    private final String[] styles = {
         "RED_ROUNDED", "GREEN_ROUNDED", "PURPLE_ROUNDED", "ORANGE_ROUNDED", 
         "WHITE_ROUNDED", "BLUE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED"
     };
+    private String[] vertexStyles;
+    
     private final int[][] vertexLocations;
     private int animationSpeed;
     private int maxX;
@@ -75,7 +77,9 @@ public class GraphView extends javax.swing.JFrame
             case DFS: setTitle("Depth First Search"); break;
             case BFS: setTitle("Breadth First Search"); break;
             case TOPOLOGICAL: setTitle("Topological Sort"); break;
-            case SCC: setTitle("Strongly Connected Components"); break;
+            case SCC: setTitle("Strongly Connected Components");
+                    log("");
+                    break;
             default: setTitle("Error"); break;
         }
     }
@@ -494,9 +498,10 @@ public class GraphView extends javax.swing.JFrame
     private void showAlgorithmSCC()
     {
         styleCount = 0;
+        vertexStyles = new String[8];
         GraphTools gt = new GraphTools();
         ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
-        
+        log("First we will compute the finishing times of each node");
         graph.getModel().beginUpdate();
         try
         {
@@ -533,7 +538,11 @@ public class GraphView extends javax.swing.JFrame
         
         if(order.get(0)[0].equalsIgnoreCase("TRANSPOSE"))
         {
-            log("We will now run DFS on the transpose");
+            log("We now run DFS on the transpose, in descending order\n"
+                + "of finishing times. Along the way we mark each node"
+                + "as part of a strongly connected compnenet group."
+                + "Once finished, we then start the DFS at another location"
+                + "and mark each node as part of a new SCC group");
             //Add timer task
             order.remove(0);
             TimerTask tt = new TimerTask()
@@ -691,11 +700,20 @@ public class GraphView extends javax.swing.JFrame
     private void showSCCOrder(ArrayList<String[]> order)
     {                      
         if(order.isEmpty())
-            return;
-        
-        System.out.println("[" + order.size() + "]Instruction ORD: " + Arrays.toString(order.get(0)));
-                
-        if(order.get(0)[0].equalsIgnoreCase("SCC_END"))
+        {
+            log("We now simply carry over the results to the original graph\n"
+                + "where we can view the strongly connected componenents");
+            TimerTask tt = new TimerTask()
+            {
+                @Override
+                public void run() 
+                {
+                    showSCCOnGraph();
+                }
+            };
+            timer.schedule(tt, 2500);
+        }        
+        else if(order.get(0)[0].equalsIgnoreCase("SCC_END"))
         {
             styleCount++;
             order.remove(0);
@@ -708,10 +726,11 @@ public class GraphView extends javax.swing.JFrame
             graph.getModel().beginUpdate();
             try
             {
+                vertexStyles[nextNodeID - 'A'] = styles[styleCount];
                 v1 = (mxCell) graph.insertVertex(parent, null, nextNodeID, 
                                                 vertexLocations[nextNodeID - 'A'][0], 
                                                 vertexLocations[nextNodeID - 'A'][1], 
-                                                50, 50, vertexStyles[styleCount]);
+                                                50, 50, styles[styleCount]);
             }
             catch(Exception e)
             {
@@ -738,8 +757,6 @@ public class GraphView extends javax.swing.JFrame
         {
             char curNodeID = order.get(0)[0].charAt(0);
             char nextNodeID = order.get(0)[1].charAt(0);
-                       
-            //System.out.printf("%c -> %c: %s\n", curNodeID, nextNodeID, vertexStyles[styleCount]);
             
             graph.getModel().beginUpdate();
             try
@@ -747,12 +764,12 @@ public class GraphView extends javax.swing.JFrame
                 Object v1 = graph.insertVertex(parent, null, curNodeID, 
                                                 vertexLocations[curNodeID - 'A'][0], 
                                                 vertexLocations[curNodeID - 'A'][1], 
-                                                50, 50, vertexStyles[styleCount]);
+                                                50, 50, styles[styleCount]);
 
                 Object v2 = graph.insertVertex(parent, null, nextNodeID, 
                                                 vertexLocations[nextNodeID - 'A'][0], 
                                                 vertexLocations[nextNodeID - 'A'][1], 
-                                                50, 50, vertexStyles[styleCount]);
+                                                50, 50, styles[styleCount]);
 
                 graph.insertEdge(parent, null, null, v1, v2, "OVERLAY_EDGE");
 
@@ -777,6 +794,36 @@ public class GraphView extends javax.swing.JFrame
             };
             timer.schedule(tt, animationSpeed);
         }
+    }
+    
+    private void showSCCOnGraph()
+    {
+        try
+        {   
+            //Clear the graph
+            graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
+            Object[] verticies = new Object[8];            
+            for(int i = 0; i<8;i++)
+            {
+                char ID = (char) ('A' + i);
+                verticies[i] = graph.insertVertex(parent, null, ID , 
+                                                vertexLocations[i][0], 
+                                                vertexLocations[i][1], 
+                                                50, 50, vertexStyles[ID - 'A']);
+            }
+            
+            //Add edges between nodes
+            for(int i=0;i<wrapper.numNodes;i++)
+                for(int j=0;j<wrapper.numNodes;j++)
+                {
+                    if(wrapper.connections[i][j] && i != j)
+                        graph.insertEdge(parent, null, null, verticies[i], verticies[j]);
+                }
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        }  
     }
     
     private void appendToLog(String text)
@@ -854,8 +901,8 @@ public class GraphView extends javax.swing.JFrame
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(247, Short.MAX_VALUE)
-                .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(234, Short.MAX_VALUE)
+                .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -868,9 +915,10 @@ public class GraphView extends javax.swing.JFrame
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                    .addGap(77, 77, 77)))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(0, 0, 0)
+                    .addComponent(graphScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                    .addGap(90, 90, 90)))
         );
 
         pack();
