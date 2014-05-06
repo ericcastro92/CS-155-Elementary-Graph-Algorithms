@@ -114,6 +114,15 @@ public class MainView extends javax.swing.JFrame {
                 isDefault = true;
             }
         });
+        sccRadio.addChangeListener((ChangeEvent e) -> {
+            if (sccRadio.isSelected()) {
+                setSliderSCC();
+                isDefault = false;
+            } else {
+                setSliderDefaults();
+                isDefault = true;
+            }
+        });
     }
 
     private void setSliderDefaults() {
@@ -135,22 +144,27 @@ public class MainView extends javax.swing.JFrame {
         nodeSlider.setSnapToTicks(true);
         edgeSlider.setValue(9);
         edgeSizeLabel.setText("9");
+        
+        edgeSlider.setEnabled(true);
+        nodeSlider.setEnabled(true);
     }
 
     private void setSliderTopological() {
         nodeSlider.removeChangeListener(defaultNodeListener);
-        edgeSlider.removeChangeListener(defaultEdgeListener);
-
         nodeSlider.addChangeListener(topologicalNodeListener);
-        edgeSlider.addChangeListener(topologicalEdgeListener);
-
-        edgeSlider.setMinimum(1);
-        edgeSlider.setMaximum(2);
-        edgeSlider.setValue(1);
-        edgeSlider.setSnapToTicks(true);
-        edgeSizeLabel.setText("Random");
+        
+        edgeSizeLabel.setText("-");
+        edgeSlider.setEnabled(false);
     }
-
+    
+    private void setSliderSCC()
+    {
+        nodeSlider.setValue(8);
+        edgeSizeLabel.setText("-");
+        nodeSlider.setEnabled(false);
+        edgeSlider.setEnabled(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
