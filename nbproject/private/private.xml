@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/UI/MainView.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/graphing/GraphTools.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/graphing/Quiz.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/UI/GraphView.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/graphing/QuizTools.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/UI/QuizFrame.java</file>
-            <file>file:/D:/Unity%20Projs/ElementaryGraphs/src/com/graphing/Main.java</file>
+            <file>file:/Users/ericcastro/NetBeansProjects/CS-155-Elementary-Graph-Algorithms/src/com/graphing/GraphTools.java</file>
+            <file>file:/Users/ericcastro/NetBeansProjects/CS-155-Elementary-Graph-Algorithms/src/com/graphing/Node.java</file>
+            <file>file:/Users/ericcastro/NetBeansProjects/CS-155-Elementary-Graph-Algorithms/src/com/UI/GraphView.java</file>
+            <file>file:/Users/ericcastro/NetBeansProjects/CS-155-Elementary-Graph-Algorithms/src/com/graphing/GraphWrapper.java</file>
         </group>
     </open-files>
 </project-private>

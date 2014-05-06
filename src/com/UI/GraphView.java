@@ -516,13 +516,13 @@ public class GraphView extends javax.swing.JFrame
             public void run() 
             {
                 order.remove(0);
-                showSCCOrder(order);
+                showFinishTimeOrder(order);
             }
         };
         timer.schedule(tt, animationSpeed);  
     }
     
-    private void showSCCOrder(ArrayList<String[]> order)
+    private void showFinishTimeOrder(ArrayList<String[]> order)
     {   
         if(order.isEmpty())
             return;        
@@ -573,7 +573,7 @@ public class GraphView extends javax.swing.JFrame
                 public void run() 
                 {
                     order.remove(0);
-                    showSCCOrder(order);
+                    showFinishTimeOrder(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
@@ -581,7 +581,7 @@ public class GraphView extends javax.swing.JFrame
         else if(order.get(0)[0].equalsIgnoreCase("BACK"))
         {
             order.remove(0);
-            showSCCOrder(order);
+            showFinishTimeOrder(order);
         }
         else if(order.get(0)[0].equalsIgnoreCase(""))
         {
@@ -604,7 +604,7 @@ public class GraphView extends javax.swing.JFrame
                 public void run() 
                 {
                     order.remove(0);
-                    showSCCOrder(order);
+                    showFinishTimeOrder(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
@@ -646,7 +646,7 @@ public class GraphView extends javax.swing.JFrame
                 public void run() 
                 {
                     order.remove(0);
-                    showSCCOrder(order);
+                    showFinishTimeOrder(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
@@ -684,6 +684,11 @@ public class GraphView extends javax.swing.JFrame
         {
             graph.getModel().endUpdate();
         } 
+    }
+    
+    private void showSCCOrder(ArrayList<String[]> order)
+    {
+        
     }
     
     private void appendToLog(String text)
