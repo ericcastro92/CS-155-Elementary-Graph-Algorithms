@@ -39,9 +39,8 @@ public class GraphView extends javax.swing.JFrame
     private Object parent;
     
     private final String[] vertexStyles = {
-        "RED_ROUNDED", "GREEN_ROUNDED", "BLUE_ROUNDED",
-        "ORANGE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED",
-        "PURPLE_ROUNDED", "WHITE_ROUNDED"
+        "RED_ROUNDED", "GREEN_ROUNDED", "PURPLE_ROUNDED", "ORANGE_ROUNDED", 
+        "WHITE_ROUNDED", "BLUE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED"
     };
     private final int[][] vertexLocations;
     private int animationSpeed;
@@ -530,7 +529,7 @@ public class GraphView extends javax.swing.JFrame
         if(order.isEmpty())
             return;        
                 
-        System.out.println("Instruction: " + Arrays.toString(order.get(0)));
+        System.out.println("Instruction FTO: " + Arrays.toString(order.get(0)));
         
         if(order.get(0)[0].equalsIgnoreCase("TRANSPOSE"))
         {
@@ -542,11 +541,11 @@ public class GraphView extends javax.swing.JFrame
                 @Override
                 public void run() 
                 {
+                    System.out.println("Displaying Inverse");
                     displayInverse(order);
                 }
             };
             timer.schedule(tt, animationSpeed);
-            
         }        
         else if(order.get(0)[0].equalsIgnoreCase("DONE"))
         {
@@ -681,10 +680,6 @@ public class GraphView extends javax.swing.JFrame
                         graph.insertEdge(parent, null, null, verticies[j], verticies[i]);
                 }
         }
-        catch(Exception e)
-        {
-            System.out.println("Graph Exception");
-        }
         finally
         {
             graph.getModel().endUpdate();
@@ -694,12 +689,12 @@ public class GraphView extends javax.swing.JFrame
     }
     
     private void showSCCOrder(ArrayList<String[]> order)
-    {
+    {                      
         if(order.isEmpty())
-            return;        
-                
-        System.out.println("Instruction: " + Arrays.toString(order.get(0)));
+            return;
         
+        System.out.println("[" + order.size() + "]Instruction ORD: " + Arrays.toString(order.get(0)));
+                
         if(order.get(0)[0].equalsIgnoreCase("SCC_END"))
         {
             styleCount++;
@@ -709,16 +704,22 @@ public class GraphView extends javax.swing.JFrame
         else if(order.get(0)[0].isEmpty())
         {
             char nextNodeID = order.get(0)[1].charAt(0);
+            //System.out.printf("%c: %s\n", nextNodeID, vertexStyles[styleCount]);
+            graph.getModel().beginUpdate();
             try
             {
-                System.out.printf("Empty: %c\n", nextNodeID);
                 v1 = (mxCell) graph.insertVertex(parent, null, nextNodeID, 
                                                 vertexLocations[nextNodeID - 'A'][0], 
                                                 vertexLocations[nextNodeID - 'A'][1], 
                                                 50, 50, vertexStyles[styleCount]);
             }
+            catch(Exception e)
+            {
+                System.out.println("Graph Exception");
+            }
             finally
             {
+                System.out.println("Graph update end");
                 graph.getModel().endUpdate();
             } 
             
@@ -738,6 +739,8 @@ public class GraphView extends javax.swing.JFrame
             char curNodeID = order.get(0)[0].charAt(0);
             char nextNodeID = order.get(0)[1].charAt(0);
                        
+            //System.out.printf("%c -> %c: %s\n", curNodeID, nextNodeID, vertexStyles[styleCount]);
+            
             graph.getModel().beginUpdate();
             try
             {   
