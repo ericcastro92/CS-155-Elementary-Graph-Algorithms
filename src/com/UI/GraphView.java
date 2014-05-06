@@ -520,13 +520,11 @@ public class GraphView extends javax.swing.JFrame
             }
         };
         timer.schedule(tt, animationSpeed);  
-       
-        //displayInverse();
     }
     
     private void showSCCOrder(ArrayList<String[]> order)
     {   
-        if(order.isEmpty() || order.get(0)[0].equalsIgnoreCase("RETURN")) 
+        if(order.isEmpty())
             return;        
                 
         System.out.println("Instruction: " + Arrays.toString(order.get(0)));
@@ -536,20 +534,18 @@ public class GraphView extends javax.swing.JFrame
             log("We will now run DFS on the transpose");
             //Add timer task
             order.remove(0);
-            order.add(0, new String[]{"RETURN", ""});
             TimerTask tt = new TimerTask()
             {
                 @Override
                 public void run() 
                 {
-                    showSCCOrder(order);
+                    displayInverse();
                 }
             };
             timer.schedule(tt, animationSpeed);
             
-        }
-        
-        if(order.get(0)[0].equalsIgnoreCase("DONE"))
+        }        
+        else if(order.get(0)[0].equalsIgnoreCase("DONE"))
         {
             char nextNodeID = order.get(0)[1].charAt(0);
             graph.getModel().beginUpdate();
@@ -663,7 +659,6 @@ public class GraphView extends javax.swing.JFrame
         {   
             //Clear the graph
             graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
-            log("Preform DFS on inverse to find SCC.");
             Object[] verticies = new Object[8];            
             for(int i = 0; i<8;i++)
             {
