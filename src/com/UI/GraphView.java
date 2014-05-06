@@ -23,29 +23,33 @@ import java.util.TimerTask;
 import javax.swing.event.ChangeEvent;
 
 /**
- *
+ * View used to display graph algorithm visualizations.
  * @author ericcastro
  */
 public class GraphView extends javax.swing.JFrame 
 {   
+    //Determine which algorithm is being used
     public final static int DFS = 1;
     public final static int BFS = 2;
     public final static int TOPOLOGICAL = 3;
     public final static int SCC = 4;
     
+    //Animation variables
     private final Timer timer;
     private final mxGraph graph;
     private final GraphWrapper wrapper;
+    private int animationSpeed;
     private Object parent;
     
+    //Used for SCC algorithm to distinguish between SCCs.
     private final String[] styles = {
         "RED_ROUNDED", "GREEN_ROUNDED", "PURPLE_ROUNDED", "ORANGE_ROUNDED", 
         "WHITE_ROUNDED", "BLUE_ROUNDED", "YELLOW_ROUNDED", "GREY_ROUNDED"
     };
     private String[] vertexStyles;
     
+    //Tracks where each node is stored on the graph visually.
     private final int[][] vertexLocations;
-    private int animationSpeed;
     private int maxX;
     private int maxY;
     
@@ -82,6 +86,9 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    /**
+     * Initialize the graph view
+     */
     private void initCustomComponents()
     {
         animationSpeed = 3000;
@@ -104,6 +111,9 @@ public class GraphView extends javax.swing.JFrame
         });
     }
     
+    /**
+     * Create all styles that will be used on the graph
+     */
     private void buildStyles()
     {
         mxStylesheet stylesheet = graph.getStylesheet();
@@ -176,6 +186,9 @@ public class GraphView extends javax.swing.JFrame
         stylesheet.putCellStyle("OVERLAY_EDGE", style);
     }
 
+    /**
+     * Build the graph and place all nodes on the graph
+     */
     private void buildGraph()
     { 
         int chartSize = wrapper.numNodes / 2;
@@ -246,6 +259,9 @@ public class GraphView extends javax.swing.JFrame
     
     Object v1;
     
+    /**
+     * Preform the animation for DFS
+     */
     private void showAlgorithmDFS()
     {
         ArrayList<String[]> order = GraphTools.dfs(wrapper.head);
@@ -277,6 +293,9 @@ public class GraphView extends javax.swing.JFrame
         //graph.setCellStyle("ROUNDED", new Object[]{v1});
     }
     
+    /**
+     * Preform the animation for BFS
+     */
     private void showAlgorithmBFS()
     {
         ArrayList<String[]> order = GraphTools.bfs(wrapper.head);
@@ -308,6 +327,11 @@ public class GraphView extends javax.swing.JFrame
         //graph.setCellStyle("ROUNDED", new Object[]{v1});
     }
     
+    /**
+     * Helper for DFS and BFS algorithms animations to show the actual order 
+     * in which the algorithm takes place.
+     * @param order List of instructions of what happens when
+     */
     private void showAlgorithmOrder(ArrayList<String[]> order)
     {
         if(order.size() == 0)
@@ -355,6 +379,9 @@ public class GraphView extends javax.swing.JFrame
         timer.schedule(tt, animationSpeed);
     }
     
+    /**
+     * Preforms the animation for Topological Sort
+     */
     private void showAlgorithmTopological()
     {
         ArrayList<String[]> order = GraphTools.topologicalSort(wrapper.forest);
@@ -384,6 +411,11 @@ public class GraphView extends javax.swing.JFrame
         timer.schedule(tt, animationSpeed);  
     }
     
+    /**
+     * Helper for Topological Sort algorithm animation to show the actual order 
+     * in which the algorithm takes place.
+     * @param order List of instructions of what happens when
+     */
     private void showTopologicalOrder(ArrayList<String[]> order)
     {
         if(order.size() == 0)
@@ -497,8 +529,12 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    //Keep track of what style to use to distinguish between SCCs
     private int styleCount;
     
+    /**
+     * Preform the animation for Strongly Connected Components
+     */
     private void showAlgorithmSCC()
     {
         styleCount = 0;
@@ -533,6 +569,10 @@ public class GraphView extends javax.swing.JFrame
         timer.schedule(tt, animationSpeed);  
     }
     
+    /**
+     * Helper to for SCC to display the start/finish times of each node in the graph
+     * @param order Instructions on which events in the animation take place
+     */
     private void showFinishTimeOrder(ArrayList<String[]> order)
     {   
         if(order.isEmpty())
@@ -670,6 +710,10 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    /**
+     * Helper for SCC to display the transpose of the graph
+     * @param order Instructions on which events in the animation take place
+     */
     private void displayInverse(ArrayList<String[]> order)
     {
         try
@@ -701,6 +745,10 @@ public class GraphView extends javax.swing.JFrame
         showSCCOrder(order);
     }
     
+    /**
+     * Helper for SCC to find the SCC groups of the graph
+     * @param order Instructions on which events in the animation take place
+     */
     private void showSCCOrder(ArrayList<String[]> order)
     {                      
         if(order.isEmpty())
@@ -799,6 +847,10 @@ public class GraphView extends javax.swing.JFrame
         }
     }
     
+    /**
+     * Helper for SCC to show the actually SCC groups of the graph
+     * @param order Instructions on which events in the animation take place
+     */
     private void showSCCOnGraph()
     {
         try
@@ -829,6 +881,10 @@ public class GraphView extends javax.swing.JFrame
         }  
     }
     
+    /**
+     * Appends text to the log of the GraphView
+     * @param text String to be appended
+     */
     private void appendToLog(String text)
     {
         String temp = logLabel.getText();
@@ -836,6 +892,10 @@ public class GraphView extends javax.swing.JFrame
         logLabel.setText(temp);
     }
     
+    /**
+     * Prints a message to the log of the GraphView
+     * @param text  String to be printed
+     */
     private void log(String text)
     {
         logLabel.setText(text);

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 
 /**
- *
- * @author Jonathan Yee
+ * Basic frame that contains information about each algorithm
+ * @author ericcastro
  */
 public class InformationFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form ExerciseFrame
+     * Creates new form InformationFrame
      */
     public InformationFrame(int algorithm) {
         initComponents();
@@ -38,6 +38,9 @@ public class InformationFrame extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Displays information about DFS
+     */
     private void displayDFSInfo()
     {
         String info = "Depth First Search\n\n"
@@ -45,6 +48,9 @@ public class InformationFrame extends javax.swing.JFrame {
         informationArea.setText(info);
     }
     
+    /**
+     * Displays information about BFS
+     */
     private void displayBFSInfo()
     {
         String info = "Breadth First Search\n\n"
@@ -52,6 +58,9 @@ public class InformationFrame extends javax.swing.JFrame {
         informationArea.setText(info);        
     }
     
+    /**
+     * Displays information about Topological Sort
+     */
     private void displayTopologicalInfo()
     {
         String info = "Topological Sort\n\n"
@@ -59,6 +68,9 @@ public class InformationFrame extends javax.swing.JFrame {
         informationArea.setText(info);
     }
     
+    /**
+     * Displays information about SCC
+     */
     private void displaySCCInfo()
     {
         String info = "Strongly Connected Components\n\n"

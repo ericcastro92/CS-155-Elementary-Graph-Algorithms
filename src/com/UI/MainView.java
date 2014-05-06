@@ -20,18 +20,19 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Landing view of the application.
  * @author ericcastro
  */
 public class MainView extends javax.swing.JFrame {
 
+    //Keeps track of radio buttons
     private ButtonGroup algorithmSelection;
 
+    //Used to monitor the sliders
     private final ChangeListener defaultNodeListener;
     private final ChangeListener topologicalNodeListener;
     private final ChangeListener defaultEdgeListener;
     private final ChangeListener topologicalEdgeListener;
-
     private boolean isDefault;
 
     /**
@@ -125,6 +126,9 @@ public class MainView extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Resets the sliders to their defaults
+     */
     private void setSliderDefaults() {
         nodeSlider.removeChangeListener(topologicalNodeListener);
         edgeSlider.removeChangeListener(topologicalEdgeListener);
@@ -149,6 +153,9 @@ public class MainView extends javax.swing.JFrame {
         nodeSlider.setEnabled(true);
     }
 
+    /**
+     * Sets the sliders to be used if Topological Sort is selected
+     */
     private void setSliderTopological() {
         nodeSlider.removeChangeListener(defaultNodeListener);
         nodeSlider.addChangeListener(topologicalNodeListener);
@@ -157,6 +164,9 @@ public class MainView extends javax.swing.JFrame {
         edgeSlider.setEnabled(false);
     }
     
+    /**
+     * Sets the sliders to be used if SCC is selected
+     */
     private void setSliderSCC()
     {
         nodeSlider.setValue(8);
@@ -439,6 +449,10 @@ public class MainView extends javax.swing.JFrame {
         displayFrame(frame);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
+    /**
+     * Display the graph view based on what algorithm is selected
+     * @param evt 
+     */
     private void displayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayButtonActionPerformed
 
         GraphWrapper wrapper;
@@ -507,6 +521,10 @@ public class MainView extends javax.swing.JFrame {
         displayFrame(frame);
     }//GEN-LAST:event_sccInfoButtonActionPerformed
 
+    /**
+     * Display a frame in the middle of the screen.
+     * @param frame View to be displayed
+     */
     private void displayFrame(Frame frame) {
         int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth();
         int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight();

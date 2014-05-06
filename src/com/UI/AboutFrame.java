@@ -7,7 +7,7 @@
 package com.UI;
 
 /**
- *
+ * Simple about frame to provide information about the developers and give credits
  * @author ericcastro
  */
 public class AboutFrame extends javax.swing.JFrame {

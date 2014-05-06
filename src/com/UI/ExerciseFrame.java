@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 
 /**
- *
+ * Simple frame that contains exercises for the user to practice with.
  * @author Jonathan Yee
  */
 public class ExerciseFrame extends javax.swing.JFrame {

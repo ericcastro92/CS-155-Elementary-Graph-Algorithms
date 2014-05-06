@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 
 /**
- *
+ * View that presents a quiz to the user
  * @author Jonathan Yee
  */
 public class QuizFrame extends javax.swing.JFrame {
@@ -194,6 +194,9 @@ public class QuizFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_SubmitActionPerformed
 
+    /**
+     * Displays the next question
+     */
     private void displayNext() {
         if (qCounter >= q.size()) {
             qBox.setText("Congratulations! You finished the quiz. "
