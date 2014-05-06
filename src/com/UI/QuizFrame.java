@@ -175,6 +175,10 @@ public class QuizFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
+        if(Submit.getText().equalsIgnoreCase("Quit")) {
+            System.out.println("Quiting...");
+            this.dispose();
+        }
         if (currQ.getCorrect() == buttonSelection) {
             totalscore++;
             scoreValueLabel.setText(String.valueOf(totalscore));
@@ -182,9 +186,8 @@ public class QuizFrame extends javax.swing.JFrame {
             buttonSelection = 0;
         } else if (buttonSelection == 0) {
 
-        } else if (Submit.getText().equals("Quit")) {
-            
-        } else {
+        }
+        else {
             displayNext();
             buttonSelection = 0;
         }

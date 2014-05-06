@@ -41,7 +41,7 @@ public class ExerciseFrame extends javax.swing.JFrame {
         ExerciseArea = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         BFSButton.setText("Bread-First Search");
         BFSButton.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +81,6 @@ public class ExerciseFrame extends javax.swing.JFrame {
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("Exercises");
         jTextField1.setBorder(null);
-        jTextField1.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
