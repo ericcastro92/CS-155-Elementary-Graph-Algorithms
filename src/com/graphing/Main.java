@@ -57,7 +57,7 @@ public class Main {
         GraphTools gt = new GraphTools();
         GraphWrapper wrapper = GraphTools.generateSCCGraph();
         System.out.println("=========Algorithm Start==========");
-        order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        order = gt.scc(wrapper.forest, wrapper.forestT);
         for(int i=0;i<order.size();i++)
             System.out.println(Arrays.toString(order.get(i)));
         

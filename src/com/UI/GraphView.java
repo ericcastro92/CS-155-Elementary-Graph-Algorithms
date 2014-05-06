@@ -504,7 +504,7 @@ public class GraphView extends javax.swing.JFrame
         styleCount = 0;
         vertexStyles = new String[8];
         GraphTools gt = new GraphTools();
-        ArrayList<String[]> order = gt.stronglyConnectedComponenets(wrapper.forest, wrapper.forestT);
+        ArrayList<String[]> order = gt.scc(wrapper.forest, wrapper.forestT);
         log("First we will compute the finishing times of each node");
         graph.getModel().beginUpdate();
         try

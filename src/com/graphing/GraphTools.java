@@ -10,8 +10,6 @@ public class GraphTools
 {
     private static ArrayList<String[]> order;
     private static ArrayList<String> topOrder;
-    public static final int RAND_EDGES = 0;
-    public static final int MAX_EDGES = 1;
     
     /**
      * Generates a graph given the number of nodes and edges
@@ -406,7 +404,7 @@ public class GraphTools
      * @param forestT Transpose of the group of node. 
      * @return order of actions to be used to display the animation
      */
-    public ArrayList<String[]> stronglyConnectedComponenets(Node[] forest, Node[] forestT)
+    public ArrayList<String[]> scc(Node[] forest, Node[] forestT)
     {
         System.out.println("==========Strongly Connected Components==========");
         order = new ArrayList<>();

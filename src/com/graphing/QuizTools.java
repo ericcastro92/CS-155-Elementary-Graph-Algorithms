@@ -13,7 +13,6 @@ public class QuizTools {
 
     public void main() {
         quizMaker();
-
     }
 
     public void quizMaker() {
